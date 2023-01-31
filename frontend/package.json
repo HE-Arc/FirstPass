@@ -9,7 +9,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@quasar/extras": "^1.15.10",
     "axios": "^1.2.6",
+    "quasar": "^2.11.5",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
