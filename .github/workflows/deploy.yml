@@ -18,5 +18,5 @@ jobs:
           key: ${{ secrets.DEPLOY_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
-            cd project/Giraffe-Palladium
+            cd project
             ./deploy.sh
