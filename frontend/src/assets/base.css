@@ -1,52 +1,30 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
+  --lastpass-red: #d32d27;
+  --lastpass-red-dark: #af0809;
+  --lastpass-black: #000000;
+  --lastpass-dark-blue: #0c2340;
+  --lastpass-light-grey: #d9e1e2;
+  --lastpass-dark-grey: #333f48;
+  --color-text: #050607;
+  --color-background: #aaa;
+  --color-body-background: #fff;
+  --color-sidebar: #999;
 
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --navbar-height: 3.5rem;
 }
 
-/* semantic color variables for this project */
+/* semantic color variables for this project
 :root {
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
-
-  --color-border: var(--vt-c-divider-light-2);
-  --color-border-hover: var(--vt-c-divider-light-1);
-
-  --color-heading: var(--vt-c-text-light-1);
-  --color-text: var(--vt-c-text-light-1);
-
-  --section-gap: 160px;
-}
+  
+} */
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --color-text: #fff;
+    --color-background: #272727;
+    --color-body-background: #121212;
+    --color-sidebar: #333;
   }
 }
 
@@ -62,13 +40,96 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: var(--color-body-background);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  width: 100%;
+  /* height: 100vh; */
+}
+
+.label {
+  width: 75%;
+  height: 2rem;
+  font-size: 1.2rem;
+  border-bottom: 2px solid white;
+}
+.login-heading {
+  width: 100%;
+  border-bottom: 3px solid var(--lastpass-red);
+  margin-bottom: 2rem;
+}
+.login-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 5rem;
+  background-color: var(--color-background);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+.login-form {
+  width: 75%;
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input {
+  width: 75%;
+  height: 2rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-text);
+  border-radius: 0.5rem;
+}
+
+.btn {
+  width: 50%;
+  height: 2rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: var(--lastpass-red);
+  color: whitesmoke;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: var(--lastpass-red-dark);
+  color: whitesmoke;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.is-invalid {
+  outline: 2px solid var(--lastpass-red);
+}
+
+.fa-spinner-third {
+  animation: spin 1s linear infinite;
+}
+.invalid {
+  color: var(--lastpass-red);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }

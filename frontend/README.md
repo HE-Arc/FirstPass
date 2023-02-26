@@ -33,3 +33,7 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Sources
+
+- Frontend login with pinia and vue3: [Jason Watmore](https://jasonwatmore.com/post/2022/07/25/vue-3-pinia-user-registration-and-login-example-tutorial)

@@ -1,9 +1,19 @@
 <script setup>
-import { RouterView } from "vue-router";
+import navBar from "../components/nav-bar.vue";
+import vault from "../components/vault-view.vue";
+import sideBar from "../components/side-bar.vue";
 </script>
 
 <template>
-  <RouterView />
+  <header>
+    <navBar />
+  </header>
+  <body>
+    <div class="main">
+      <sideBar />
+      <vault vault-name="Vault test name" />
+    </div>
+  </body>
 </template>
 
 <style scoped>
