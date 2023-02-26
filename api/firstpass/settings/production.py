@@ -7,7 +7,6 @@ DEBUG = False
 
 def get_db_datas():
     data = {}
-    print(os.getcwd())
     appconfigRoot = '../../appconfig/'
     with open(appconfigRoot + 'postgres-database', 'r') as database:
         data['name'] = database.read()
@@ -26,7 +25,7 @@ db_datas = get_db_datas()
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': db_datas['database'],
+        'NAME': db_datas['name'],
         'USER': db_datas['user'],
         'PASSWORD': db_datas['password'],
         'HOST': db_datas['host'],
