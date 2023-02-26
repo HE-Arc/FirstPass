@@ -1,4 +1,4 @@
-from defaults import *
+from .defaults import *
 DEBUG = True
 
 # Database
