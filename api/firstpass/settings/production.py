@@ -1,4 +1,5 @@
 from .defaults import *
+import os 
 DEBUG = False
 
 # Database
@@ -6,7 +7,8 @@ DEBUG = False
 
 def get_db_datas():
     data = {}
-    appconfigRoot = '../../../../appconfig/'
+    print(os.getcwd())
+    appconfigRoot = '../../appconfig/'
     with open(appconfigRoot + 'postgres-database', 'r') as database:
         data['name'] = database.read()
     with open(appconfigRoot + 'postgres-host', 'r') as host:
