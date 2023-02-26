@@ -6,7 +6,7 @@ DEBUG = False
 
 def get_db_datas():
     data = {}
-    appconfigRoot = '../../appconfig/'
+    appconfigRoot = '../../../../appconfig/'
     with open(appconfigRoot + 'postgres-database', 'r') as database:
         data['name'] = database.read()
     with open(appconfigRoot + 'postgres-host', 'r') as host:
