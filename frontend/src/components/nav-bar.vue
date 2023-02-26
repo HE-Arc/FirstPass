@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+const logged = localStorage.getItem("user");
 </script>
 <script>
 export default {
@@ -76,8 +77,10 @@ export default {
     </div>
     <div class="toggleable-section" id="primary-navigation">
       <div class="navbar-links navbar-section">
-        <RouterLink to="/" class="nav-link">Vaults</RouterLink>
-        <RouterLink to="/account" class="nav-link">Account</RouterLink>
+        <RouterLink to="/" class="nav-link" v-show="logged">Vaults</RouterLink>
+        <RouterLink to="/account" class="nav-link" v-show="logged"
+          >Account</RouterLink
+        >
       </div>
       <div class="navbar-buttons navbar-section">
         <RouterLink to="login" class="nav-link">Login</RouterLink>

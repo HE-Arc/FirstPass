@@ -50,6 +50,4 @@ async function onSubmit(values) {
   </div>
 </template>
 
-<style>
-
-</style>
+<style></style>
