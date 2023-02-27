@@ -22,7 +22,7 @@ function request(method) {
 function authHeader(url) {
   const { user } = useAuthStore();
   const isLogged = !!user?.token;
-  const isApiUrl = url.startsWith(import.meta.env.VUE_APP_API_URL);
+  const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL);
   return isLogged && isApiUrl ? { Authorization: `Bearer ${user.token}` } : {};
 }
 
