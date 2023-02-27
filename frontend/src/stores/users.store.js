@@ -15,7 +15,7 @@ export const useUsersStore = defineStore({
   actions: {
     async register(user) {
       try {
-        await fetchWrapper.post(`${baseUrl}/register`, user);
+        await fetchWrapper.post(`${baseUrl}/register/`, user);
       } catch (err) {
         const alertStore = useAlertStore();
         alertStore.error(err);

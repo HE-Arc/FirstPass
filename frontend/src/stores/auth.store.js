@@ -6,8 +6,6 @@ import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
 
-//const alertStore = useAlertStore();
-
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -15,17 +13,19 @@ export const useAuthStore = defineStore({
     returnUrl: null,
   }),
   actions: {
-    async login(email, password) {
+    async login(username, password) {
       const alertStore = useAlertStore();
       try {
-        const user = await fetchWrapper.post(`${baseUrl}/login`, {
-          email,
+        const user = await fetchWrapper.post(`${baseUrl}/login/`, {
+          username,
           password,
         });
-        localStorage.setItem("user", JSON.stringify(user));
+
         this.user = user;
-        useAlertStore.success("Login successful");
-        myRouter.push(this.returnUrl || "/");
+        localStorage.setItem("user", JSON.stringify(this.user));
+        const alertStore = useAlertStore();
+        alertStore.success("Login successful");
+        myRouter.push({ name: "home" });
       } catch (err) {
         alertStore.error(err);
       }

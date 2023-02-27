@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from rest_framework import viewsets
 from .serializers import UserSerializer, AccountSerializer
 from .models import Account
+from .models import create_user_account, save_user_account
 
 
 class AccountViewSet(viewsets.ReadOnlyModelViewSet):
@@ -56,6 +57,6 @@ def register_view(request):
             'errors': {'password': 'Passwords do not match'}
         }, status=400)
 
-    user = User.objects.create_user(username, password)
+    user = User.objects.create_user(username=username, password=password)
     user.save()
     return JsonResponse({}, status=200)

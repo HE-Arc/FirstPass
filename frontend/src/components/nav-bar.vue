@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink } from "vue-router";
+import { useAuthStore } from "../stores/auth.store";
 const logged = localStorage.getItem("user");
 </script>
 <script>
@@ -24,6 +25,9 @@ export default {
         navMenu.style.transform = "translateY(-100%)";
         navMenu.style.marginTop = "-10rem";
       }
+    },
+    logout() {
+      useAuthStore().logout();
     },
   },
 };
@@ -83,10 +87,15 @@ export default {
         >
       </div>
       <div class="navbar-buttons navbar-section">
-        <RouterLink to="login" class="nav-link">Login</RouterLink>
+        <RouterLink to="login" class="nav-link" v-show="!logged"
+          >Login</RouterLink
+        >
         <RouterLink to="register">
-          <button class="navbar-buttons--signup">Sign Up</button>
+          <button class="navbar-buttons--signup" v-show="!logged">
+            Sign Up
+          </button>
         </RouterLink>
+        <a v-on:click="logout()" class="nav-link" v-show="logged">Logout</a>
       </div>
     </div>
   </nav>
@@ -183,6 +192,8 @@ export default {
 
   color: var(--color-text);
   text-decoration: none;
+
+  cursor: pointer;
 }
 
 .nav-toggle-button {
