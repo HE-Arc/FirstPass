@@ -9,7 +9,7 @@
         vaults.
       </p>
     </section>
-    <section class="spacer-1">spacer 1</section>
+    <section class="spacer-1"></section>
     <section class="main-section section-second">
       <p class="main-section-p">
         Using state of the art, proprietary encryption of none at all, FirstPass
@@ -27,7 +27,7 @@
         may occur as a result of using our service.
       </p>
     </section>
-    <section class="spacer-2">spacer 2</section>
+    <section class="spacer-2"></section>
     <section class="main-section section-third">
       <p class="main-section-p">
         Each user is entitled to as many vaults as their heart desires. Each
@@ -65,7 +65,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 50%;
+  width: 100%;
   height: 100%;
   background-color: transparent;
   color: black;
@@ -80,14 +80,14 @@
 
 .main-info-header {
   font-family: "Staatliches", cursive;
-  font-size: 5rem;
+  font-size: 2rem;
   font-weight: 600;
   letter-spacing: 0.2rem;
 }
 
 .main-info-subheader {
   font-family: "Staatliches", cursive;
-  font-size: 3rem;
+  font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0.2rem;
 }
@@ -128,5 +128,23 @@
   letter-spacing: 0.1rem;
   text-align: center;
   margin-block: 1rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .main-section {
+    width: 50%;
+  }
+
+  .main-section-p {
+    width: 100%;
+  }
+
+  .main-info-header {
+    font-size: 5rem;
+  }
+
+  .main-info-subheader {
+    font-size: 3rem;
+  }
 }
 </style>
