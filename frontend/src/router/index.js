@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import MainView from "../views/MainView.vue";
 import VaultsView from "../views/VaultsView.vue";
 
 import { useAuthStore } from "../stores/auth.store";
@@ -12,6 +13,11 @@ export const router = createRouter({
     {
       path: "/",
       name: "home",
+      component: MainView,
+    },
+    {
+      path: "/vaults",
+      name: "vaults",
       component: VaultsView,
     },
     {
@@ -37,7 +43,7 @@ router.beforeEach(async (to) => {
   const alertStore = useAlertStore();
   alertStore.clear();
 
-  const publicPages = ["/account/login", "/account/register"];
+  const publicPages = ["/", "/account/login", "/account/register"];
   const authRequired = !publicPages.includes(to.path);
   const authStore = useAuthStore();
 
