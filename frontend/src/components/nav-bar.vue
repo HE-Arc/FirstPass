@@ -81,8 +81,10 @@ export default {
     </div>
     <div class="toggleable-section" id="primary-navigation">
       <div class="navbar-links navbar-section">
-        <RouterLink to="/" class="nav-link" v-show="logged">Vaults</RouterLink>
-        <RouterLink to="/account" class="nav-link" v-show="logged"
+        <RouterLink to="Vaults" class="nav-link" v-show="logged"
+          >Vaults</RouterLink
+        >
+        <RouterLink to="Account" class="nav-link" v-show="logged"
           >Account</RouterLink
         >
       </div>

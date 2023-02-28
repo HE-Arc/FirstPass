@@ -47,14 +47,9 @@ def register_view(request):
     password = data.get('password')
     password_verify = data.get('verification')
 
-    if username is None or password is None:
+    if username is None or password is None or password != password_verify:
         return JsonResponse({
             'errors': {'username': 'Invalid credentials'}
-        }, status=400)
-
-    if password != password_verify:
-        return JsonResponse({
-            'errors': {'password': 'Passwords do not match'}
         }, status=400)
 
     user = User.objects.create_user(username=username, password=password)

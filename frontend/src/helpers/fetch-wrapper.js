@@ -1,4 +1,5 @@
 import { useAuthStore } from "../stores/auth.store";
+import { readCookie } from "./cookie-manager.js";
 
 export const fetchWrapper = {
   get: request("GET"),
@@ -9,21 +10,16 @@ export const fetchWrapper = {
 
 function request(method) {
   return (url, body) => {
-    const options = { method, headers: authHeader(url) };
+    const options = { method, headers: {} };
     if (body) {
       options.headers["Content-Type"] = "application/json";
+      options.headers["Accept"] = "application/json";
+      options.headers["x-csrftoken"] = readCookie("csrftoken");
       options.body = JSON.stringify(body);
     }
 
     return fetch(url, options).then(handleResponse);
   };
-}
-
-function authHeader(url) {
-  const { user } = useAuthStore();
-  const isLogged = !!user?.token;
-  const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL);
-  return isLogged && isApiUrl ? { Authorization: `Bearer ${user.token}` } : {};
 }
 
 async function handleResponse(response) {
