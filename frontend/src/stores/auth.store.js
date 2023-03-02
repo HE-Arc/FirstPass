@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { fetchWrapper } from "../helpers/fetch-wrapper";
 import { router as myRouter } from "../router";
 import { useAlertStore } from "./alert.store";
-import { setCookie, deleteCookie } from "../helpers/cookie-manager";
+import { deleteCookie } from "../helpers/cookie-manager";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
 
