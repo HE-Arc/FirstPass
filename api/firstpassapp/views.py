@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from rest_framework import viewsets
-from .serializers import UserSerializer, AccountSerializer
-from .models import Account
+from .serializers import UserSerializer, AccountSerializer, VaultSerializer
+from .models import Account, Vault
 
 class AccountViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Account.objects.all()
@@ -14,6 +14,10 @@ class AccountViewSet(viewsets.ReadOnlyModelViewSet):
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
+class VaultViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Vault.objects.all()
+    serializer_class = VaultSerializer
 
 @require_POST
 def login_view(request):

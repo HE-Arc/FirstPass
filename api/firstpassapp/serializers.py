@@ -17,3 +17,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             "id",
             "username",
         ]
+        
+class VaultSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Vault
+        fields = [
+            "name",
+            "image_path"
+        ]
