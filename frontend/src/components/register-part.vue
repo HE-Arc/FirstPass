@@ -56,14 +56,14 @@ export default {
   methods: {
     checkPasswordMatch() {
       const password = document.getElementById("password").value;
-      const passwordVerif = document.getElementById("password-verif").value;
+      const passwordVerif = document.getElementById("verification").value;
       if (password !== passwordVerif) {
         document
-          .getElementById("password-verif")
+          .getElementById("verification")
           .classList.add("password-mismatch");
       } else {
         document
-          .getElementById("password-verif")
+          .getElementById("verification")
           .classList.remove("password-mismatch");
       }
     },
@@ -72,7 +72,7 @@ export default {
         .dispatch("registerUser", {
           username: document.getElementById("username").value,
           password: document.getElementById("password").value,
-          passwordVerif: document.getElementById("password-verif").value,
+          passwordVerif: document.getElementById("verification").value,
         })
         .then(() => {
           this.$router.push({ name: "login" });
@@ -83,42 +83,17 @@ export default {
 </script>
 <template>
   <div class="login-container">
-    <Form
-      @submit="onSubmit"
-      :validation-schema="schema"
-      class="login-form"
-      v-slot="{ errors, isSubmitting }"
-    >
+    <Form @submit="onSubmit" :validation-schema="schema" class="login-form" v-slot="{ errors, isSubmitting }">
       <h1 class="login-heading">Register</h1>
       <label for="username" class="label">Username</label>
-      <Field
-        type="text"
-        name="username"
-        id="username"
-        class="input text-input"
-        :class="{ 'is-invalid': errors.username }"
-        placeholder="Username"
-      />
+      <Field type="text" name="username" id="username" class="input text-input" :class="{ 'is-invalid': errors.username }"
+        placeholder="Username" />
       <label for="password" class="label">Password</label>
-      <Field
-        type="password"
-        name="password"
-        id="password"
-        class="input password-input"
-        :class="{ 'is-invalid': errors.password }"
-        placeholder="Password"
-        v-on:keyup="checkPasswordMatch()"
-      />
-      <Field
-        type="password"
-        name="verification"
-        id="verification"
-        class="input password-input"
-        :class="{ 'is-invalid': errors.passwordVerif }"
-        placeholder="Password again"
-        hint="Passwords must match"
-        v-on:keyup="checkPasswordMatch()"
-      />
+      <Field type="password" name="password" id="password" class="input password-input"
+        :class="{ 'is-invalid': errors.password }" placeholder="Password" v-on:keyup="checkPasswordMatch()" />
+      <Field type="password" name="verification" id="verification" class="input password-input"
+        :class="{ 'is-invalid': errors.passwordVerif }" placeholder="Password again" hint="Passwords must match"
+        v-on:keyup="checkPasswordMatch()" />
       <div class="invalid">
         {{ errors.username }}
         {{ errors.password }}
