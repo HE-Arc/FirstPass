@@ -56,7 +56,7 @@ body {
 }
 
 .label {
-  width: 75%;
+  width: 100%;
   height: 2rem;
   font-size: 1.2rem;
   border-bottom: 2px solid white;
@@ -80,8 +80,8 @@ body {
 }
 
 .login-form {
-  width: 75%;
-  height: 75%;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,7 +89,7 @@ body {
 }
 
 .input {
-  width: 75%;
+  width: 100%;
   height: 2rem;
   margin: 0.5rem;
   padding: 0.5rem;
@@ -112,15 +112,6 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.btn:hover,
-.btn:focus {
-  background-color: var(--lastpass-red-dark);
-  color: whitesmoke;
-  font-size: 1rem;
-  font-weight: 400;
-  cursor: pointer;
-}
-
 .is-invalid {
   outline: 2px solid var(--lastpass-red);
 }
@@ -132,4 +123,27 @@ body {
   color: var(--lastpass-red);
   padding: 0.5rem;
   border-radius: 0.5rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .login-form {
+    width: 75%;
+    height: 75%;
+  }
+
+  .label {
+    width: 75%;
+  }
+  .input {
+    width: 75%;
+  }
+
+  .btn:hover,
+  .btn:focus {
+    background-color: var(--lastpass-red-dark);
+    color: whitesmoke;
+    font-size: 1rem;
+    font-weight: 400;
+    cursor: pointer;
+  }
 }

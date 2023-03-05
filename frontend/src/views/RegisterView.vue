@@ -18,7 +18,13 @@ import registerPart from "../components/register-part.vue";
   align-items: center;
   margin-inline: auto;
   margin-top: 5rem;
-  width: 40%;
+  width: 100%;
   height: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .login {
+    width: 40%;
+  }
 }
 </style>

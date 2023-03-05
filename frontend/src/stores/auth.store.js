@@ -6,7 +6,6 @@ import { useAlertStore } from "./alert.store";
 import { deleteCookie } from "../helpers/cookie-manager";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
-
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -21,10 +20,10 @@ export const useAuthStore = defineStore({
           username,
           password,
         });
+        const alertStore = useAlertStore();
 
         this.user = user;
         localStorage.setItem("user", JSON.stringify(this.user));
-        const alertStore = useAlertStore();
         alertStore.success("Login successful");
         myRouter.push({ name: "home" });
       } catch (err) {

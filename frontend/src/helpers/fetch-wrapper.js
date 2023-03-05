@@ -26,6 +26,7 @@ async function handleResponse(response) {
   const isJson = response.headers
     .get("content-type")
     ?.includes("application/json");
+  console.log(`Is JSON ${isJson}`);
   const data = isJson ? await response.json() : null;
 
   if (!response.ok) {

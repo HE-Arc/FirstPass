@@ -49,5 +49,3 @@ async function onSubmit(values) {
     </Form>
   </div>
 </template>
-
-<style></style>
