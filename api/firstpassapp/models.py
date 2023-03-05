@@ -23,7 +23,7 @@ def save_user_account(sender, instance, **kwargs):
 
 class Vault(models.Model):
     name = models.CharField(max_length=50)
-    image_path = models.FilePathField()
+    image_path = models.FilePathField(path="images")
 
 class Pair(models.Model):
     application = models.TextField()

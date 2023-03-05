@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.core.files.storage import default_storage
+from django.core.files.storage import Storage
 from rest_framework import viewsets
 from .serializers import UserSerializer, AccountSerializer, VaultSerializer
 from .models import Account, AccountVaultAccess, Vault
@@ -76,12 +76,12 @@ def create_vault(request, vault, userID):
 
 
 def save_image(request):
-    if request.FILES is None:
-        return JsonResponse(data={'error': 'No image provided'}, status=400)
-    file = request.FILES['image']
-    file_name = default_storage.save(file.name, file)
-
-    return JsonResponse(data={'image_path': default_storage.url(file_name)}, status=200)
+    if request.FILES['image']:
+        image = request.FILES['image']
+        storage = Storage()
+        storage.save(image.name, image)
+        return JsonResponse(data={'image': image}, status=200)
+    return JsonResponse(data={'image': None}, status=400)
 
 
 def get_vaults_for_user(request, user_id):
