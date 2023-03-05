@@ -3,10 +3,9 @@ import { defineStore } from "pinia";
 import { fetchWrapper } from "../helpers/fetch-wrapper";
 import { router as myRouter } from "../router";
 import { useAlertStore } from "./alert.store";
+import { deleteCookie } from "../helpers/cookie-manager";
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/users`;
-
-//const alertStore = useAlertStore();
+const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -15,23 +14,26 @@ export const useAuthStore = defineStore({
     returnUrl: null,
   }),
   actions: {
-    async login(email, password) {
+    async login(username, password) {
       const alertStore = useAlertStore();
       try {
-        const user = await fetchWrapper.post(`${baseUrl}/authenticate`, {
-          email,
+        const user = await fetchWrapper.post(`${baseUrl}/login/`, {
+          username,
           password,
         });
-        localStorage.setItem("user", JSON.stringify(user));
+
         this.user = user;
-        useAlertStore.success("Login successful");
-        myRouter.push(this.returnUrl || "/");
+        localStorage.setItem("user", JSON.stringify(this.user));
+        const alertStore = useAlertStore();
+        alertStore.success("Login successful");
+        myRouter.push({ name: "home" });
       } catch (err) {
         alertStore.error(err);
       }
     },
     logout() {
       localStorage.removeItem("user");
+      deleteCookie("csrftoken");
       this.user = null;
       myRouter.push("/login");
     },
