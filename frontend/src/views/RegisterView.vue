@@ -1,6 +1,8 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
 import registerPart from "../components/register-part.vue";
+
+document.title = "FirstPass - Register";
 </script>
 <template>
   <header>

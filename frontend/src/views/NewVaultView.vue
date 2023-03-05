@@ -1,6 +1,8 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
 import createVaultForm from "../components/create-vault-form.vue";
+
+document.title = "FirstPass - Create Vault";
 </script>
 <template>
   <header>

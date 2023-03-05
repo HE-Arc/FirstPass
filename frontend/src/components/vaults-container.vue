@@ -1,27 +1,27 @@
 <script setup>
 import vaultCard from "./vault-card.vue";
+import { useVaultsStore } from "../stores/vaults.store";
+import { ref } from "vue";
+
+const vaultStore = useVaultsStore();
+vaultStore.getUserVaults();
+const userVaults = ref(JSON.parse(localStorage.getItem("vaults"))).value;
 </script>
 <script>
 export default {
   props: {
-    vaults: Array,
     vaultId: Number,
     vaultName: String,
-  },
-  methods: {
-    goToVault() {
-      this.$router.push({ name: "vault", params: { vaultId: this.vaultId } });
-    },
   },
 };
 </script>
 <template>
   <vaultCard
-    v-for="vault in vaults"
+    v-for="vault in userVaults"
     :key="vault.id"
-    :vault-id="vault.id"
-    :vault-name="vault.name"
-    :vault-image-path="vault.imagePath"
+    :vaultId="vault.id"
+    :vaultName="vault.name"
+    :vaultImagePath="vault.image_path"
   />
 </template>
 <style scoped></style>

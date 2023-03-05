@@ -2,6 +2,8 @@
 import navBar from "../components/nav-bar.vue";
 import vault from "../components/vault-view.vue";
 import sideBar from "../components/side-bar.vue";
+
+document.title = "FirstPass - Vault";
 </script>
 
 <template>

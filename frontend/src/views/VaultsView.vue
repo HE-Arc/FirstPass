@@ -1,11 +1,11 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
 import vaultsContainer from "../components/vaults-container.vue";
-import { useVaultsStore } from "../stores/vaults.store";
 
-const vaultStore = useVaultsStore();
-const userVaults = vaultStore.getUserVaults();
+document.title = "FirstPass - Vaults";
 </script>
+
+<script></script>
 
 <template>
   <header>
@@ -13,7 +13,7 @@ const userVaults = vaultStore.getUserVaults();
   </header>
   <body>
     <div class="main">
-      <vaultsContainer :vaults="userVaults"></vaultsContainer>
+      <vaultsContainer></vaultsContainer>
     </div>
     <div class="add-btn-container">
       <a href="vaults/new-vault" class="btn-add"

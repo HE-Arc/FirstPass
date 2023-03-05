@@ -6,7 +6,6 @@ import { useImagesStore } from "../stores/images.store";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  description: yup.string().required(),
   image: yup.string().optional(),
 });
 
@@ -19,8 +18,8 @@ async function onSubmit(values) {
   //     path = await imagesStore.saveImage(values.imagePath);
   //   }
   //   console.log(path);
-  const { name, description } = values;
-  await vaultsStore.createVault(name, description, path);
+  const { name } = values;
+  await vaultsStore.createVault(name, path);
 }
 </script>
 <template>
@@ -40,15 +39,6 @@ async function onSubmit(values) {
         class="input text-input"
         :class="{ 'is-invalid': errors.name }"
         placeholder="Name"
-      />
-      <label for="description" class="label">Description</label>
-      <Field
-        type="text"
-        name="description"
-        id="description"
-        class="input text-input"
-        :class="{ 'is-invalid': errors.description }"
-        placeholder="Description"
       />
       <label for="image" class="label">Image</label>
       <Field

@@ -7,6 +7,8 @@ import { router } from "../router";
 
 const authStore = useAuthStore();
 if (authStore.user) router.push("/");
+
+document.title = "FirstPass - Login";
 </script>
 <template>
   <header>

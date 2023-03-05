@@ -1,5 +1,10 @@
 <script setup>
 import sideBarElement from "./side-bar-element.vue";
+import { useVaultsStore } from "../stores/vaults.store";
+
+const vaultStore = useVaultsStore();
+vaultStore.getUserVaults();
+const userVaults = JSON.parse(localStorage.getItem("vaults"));
 </script>
 <script>
 export default {
@@ -12,17 +17,12 @@ export default {
 <template>
   <aside class="vault-aside">
     <h1>Vaults</h1>
-    <sideBarElement :vaultId="1" vaultName="vault1" />
-    <sideBarElement :vaultId="2" vaultName="vault2" />
-    <sideBarElement :vaultId="3" vaultName="vault3" />
-    <sideBarElement :vaultId="4" vaultName="vault4" />
-    <sideBarElement :vaultId="5" vaultName="vault5" />
-    <sideBarElement :vaultId="6" vaultName="vault6" />
-    <sideBarElement :vaultId="7" vaultName="vault7" />
-    <sideBarElement :vaultId="8" vaultName="vault8" />
-    <sideBarElement :vaultId="9" vaultName="vault9" />
-    <sideBarElement :vaultId="10" vaultName="vault10" />
-    <sideBarElement :vaultId="11" vaultName="vault11" />
+    <sideBarElement
+      v-for="vault in userVaults"
+      :key="vault.id"
+      :vaultId="vault.id"
+      :vaultName="vault.name"
+    />
   </aside>
 </template>
 

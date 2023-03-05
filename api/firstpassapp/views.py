@@ -66,13 +66,20 @@ def register_view(request):
 
 
 @require_POST
-def create_vault(request, vault, userID):
-    Vault.objects.create(name=vault, image_path=None)
+def create_vault(request):
+    data = json.loads(request.body)
+    name = data.get('name')
+    path = data.get('path')
+    userID = data.get('userID')
+    vault = Vault.objects.create(name=name, image_path=path)
     user = User.objects.get(id=userID)
     account = Account.objects.get(user=user)
-    vault = Vault.objects.get(name=vault)
-    AccountVaultAccess.objects.create(account=account, vault=vault)
-    return JsonResponse(data={'vault': vault}, status=200)
+    # vault = Vault.objects.get(name=name, image_path=path)
+    AccountVaultAccess.objects.create(
+        account=account, vault=vault, access_level="O")
+    jsonVault = {'id': vault.id, 'name': vault.name,
+                 'image_path': vault.image_path}
+    return JsonResponse(data={'vault': jsonVault}, status=200)
 
 
 def save_image(request):
@@ -87,5 +94,12 @@ def save_image(request):
 def get_vaults_for_user(request, user_id):
     user = User.objects.get(id=user_id)
     account = Account.objects.get(user=user)
-    vaults = AccountVaultAccess.objects.filter(account=account)
-    return JsonResponse(data={'vaults': list(vaults.values())}, status=200)
+    account_vaults = AccountVaultAccess.objects.filter(account=account)
+    vaults = []
+    for account_vault in account_vaults:
+        vaults.append(account_vault.vault)
+    jsonVaults = []
+    for vault in vaults:
+        jsonVaults.append({'id': vault.id, 'name': vault.name,
+                           'image_path': vault.image_path})
+    return JsonResponse(data={'vaults': jsonVaults}, status=200)

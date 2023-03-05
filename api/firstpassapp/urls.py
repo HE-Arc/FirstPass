@@ -12,7 +12,7 @@ urlpatterns = [
     path('auth/register/', views.register_view, name='auth-register'),
     path('vaults/user/<int:user_id>/',
          views.get_vaults_for_user, name='vaults-for-user'),
-    path('vaults/new', views.create_vault, name='create-vault'),
-    path('images/save', views.save_image, name='save-image'),
+    path('vaults/new/', views.create_vault, name='create-vault'),
+    path('images/save/', views.save_image, name='save-image'),
     path('', include(router.urls))
 ]

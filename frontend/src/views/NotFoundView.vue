@@ -1,5 +1,7 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
+
+document.title = "FirstPass - Page not found";
 </script>
 <script></script>
 <template>
