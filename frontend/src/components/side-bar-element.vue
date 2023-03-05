@@ -9,7 +9,7 @@ export default {
 </script>
 <template>
   <RouterLink
-    :to="'/vault/' + vaultId"
+    :to="'/vaults/' + vaultId"
     class="side-link"
     :vault-name="vaultName"
     >{{ vaultName }}</RouterLink
