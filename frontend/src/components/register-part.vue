@@ -83,17 +83,42 @@ export default {
 </script>
 <template>
   <div class="login-container">
-    <Form @submit="onSubmit" :validation-schema="schema" class="login-form" v-slot="{ errors, isSubmitting }">
+    <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      class="login-form"
+      v-slot="{ errors, isSubmitting }"
+    >
       <h1 class="login-heading">Register</h1>
       <label for="username" class="label">Username</label>
-      <Field type="text" name="username" id="username" class="input text-input" :class="{ 'is-invalid': errors.username }"
-        placeholder="Username" />
+      <Field
+        type="text"
+        name="username"
+        id="username"
+        class="input text-input"
+        :class="{ 'is-invalid': errors.username }"
+        placeholder="Username"
+      />
       <label for="password" class="label">Password</label>
-      <Field type="password" name="password" id="password" class="input password-input"
-        :class="{ 'is-invalid': errors.password }" placeholder="Password" v-on:keyup="checkPasswordMatch()" />
-      <Field type="password" name="verification" id="verification" class="input password-input"
-        :class="{ 'is-invalid': errors.passwordVerif }" placeholder="Password again" hint="Passwords must match"
-        v-on:keyup="checkPasswordMatch()" />
+      <Field
+        type="password"
+        name="password"
+        id="password"
+        class="input password-input"
+        :class="{ 'is-invalid': errors.password }"
+        placeholder="Password"
+        v-on:keyup="checkPasswordMatch()"
+      />
+      <Field
+        type="password"
+        name="verification"
+        id="verification"
+        class="input password-input"
+        :class="{ 'is-invalid': errors.passwordVerif }"
+        placeholder="Password again"
+        hint="Passwords must match"
+        v-on:keyup="checkPasswordMatch()"
+      />
       <div class="invalid">
         {{ errors.username }}
         {{ errors.password }}
