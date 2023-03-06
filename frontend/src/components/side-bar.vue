@@ -1,10 +1,6 @@
 <script setup>
 import sideBarElement from "./side-bar-element.vue";
 import { useVaultsStore } from "../stores/vaults.store";
-
-const vaultStore = useVaultsStore();
-vaultStore.getUserVaults();
-const userVaults = JSON.parse(localStorage.getItem("vaults"));
 </script>
 <script>
 export default {
@@ -12,16 +8,39 @@ export default {
     vaultId: Number,
     vaultName: String,
   },
+  methods: {
+    async getVaults() {
+      this.dataReady = false;
+      this.vaults = [];
+      const vaultStore = useVaultsStore();
+      this.vaults = await vaultStore.getUserVaults();
+      this.dataReady = true;
+      console.log(this.vaults);
+      return this.vaults;
+    },
+  },
+  data() {
+    return {
+      vaults: this.getVaults(),
+      dataReady: this.dataReady,
+    };
+  },
 };
 </script>
 <template>
   <aside class="vault-aside">
+    <div class="wrapper loading-container" v-if="!dataReady">
+      <div class="loader"></div>
+    </div>
+  </aside>
+  <aside class="vault-aside" v-if="dataReady">
     <h1>Vaults</h1>
     <sideBarElement
-      v-for="vault in userVaults"
+      v-for="vault in vaults"
       :key="vault.id"
       :vaultId="vault.id"
       :vaultName="vault.name"
+      :currentVaultId="vaultId"
     />
   </aside>
 </template>

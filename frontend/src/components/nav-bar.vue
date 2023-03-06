@@ -89,10 +89,10 @@ export default {
         >
       </div>
       <div class="navbar-buttons navbar-section">
-        <RouterLink to="/login" class="nav-link" v-show="!logged"
+        <RouterLink to="/account/login" class="nav-link" v-show="!logged"
           >Login</RouterLink
         >
-        <RouterLink to="/register">
+        <RouterLink to="/account/register">
           <button class="navbar-buttons--signup" v-show="!logged">
             Sign Up
           </button>

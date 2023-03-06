@@ -13,7 +13,7 @@
     <section class="main-section section-second">
       <p class="main-section-p">
         Using state of the art, proprietary encryption of none at all, FirstPass
-        allows you to store your in all simplicity.
+        allows you to store your passwords in all simplicity.
       </p>
       <p class="main-section-p">
         The lack of encryption on our passwords is a fully intended security
@@ -37,7 +37,7 @@
         Still sharing that netflix account? Well firstly, very naughty.
         Secondly, if you ever change your password, you won't have to send an
         insecure, possibly intercepted email to your friends and family. You can
-        juste update the password in your shared vault.
+        just update the password in your shared vault.
       </p>
     </section>
   </div>

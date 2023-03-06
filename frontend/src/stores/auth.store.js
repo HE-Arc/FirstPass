@@ -25,7 +25,7 @@ export const useAuthStore = defineStore({
         this.user = user;
         localStorage.setItem("user", JSON.stringify(this.user));
         alertStore.success("Login successful");
-        myRouter.push({ name: "home" });
+        myRouter.push({ name: "vaults" });
       } catch (err) {
         alertStore.error(err);
       }

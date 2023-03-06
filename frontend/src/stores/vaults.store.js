@@ -33,14 +33,15 @@ export const useVaultsStore = defineStore({
         let user = JSON.parse(localStorage.getItem("user"));
         let userID = user.user.id;
 
-        const response = await fetchWrapper.post(`${baseUrl}/new/`, {
+        await fetchWrapper.post(`${baseUrl}/new/`, {
           name,
           path,
           userID,
         });
-        this.vaults.push(response);
-        this.getUserVaults();
-        router.push({ name: "vaults" });
+        this.vaults = this.getUserVaults();
+        router.push({
+          name: "vaults",
+        });
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
@@ -71,7 +72,7 @@ export const useVaultsStore = defineStore({
       try {
         let vaults = await fetchWrapper.get(`${baseUrl}/user/${userID}`);
         this.vaults = vaults.vaults;
-        localStorage.setItem("vaults", JSON.stringify(this.vaults));
+        return this.vaults;
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);

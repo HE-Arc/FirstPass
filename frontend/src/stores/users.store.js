@@ -4,6 +4,8 @@ import { fetchWrapper } from "../helpers/fetch-wrapper";
 import { useAuthStore } from "./auth.store";
 import { useAlertStore } from "./alert.store";
 
+import { router } from "../router";
+
 const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
 
 export const useUsersStore = defineStore({
@@ -16,6 +18,7 @@ export const useUsersStore = defineStore({
     async register(user) {
       try {
         await fetchWrapper.post(`${baseUrl}/register/`, user);
+        router.push({ name: "Login" });
       } catch (err) {
         const alertStore = useAlertStore();
         alertStore.error(err);
