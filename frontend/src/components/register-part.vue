@@ -56,14 +56,14 @@ export default {
   methods: {
     checkPasswordMatch() {
       const password = document.getElementById("password").value;
-      const passwordVerif = document.getElementById("password-verif").value;
+      const passwordVerif = document.getElementById("verification").value;
       if (password !== passwordVerif) {
         document
-          .getElementById("password-verif")
+          .getElementById("verification")
           .classList.add("password-mismatch");
       } else {
         document
-          .getElementById("password-verif")
+          .getElementById("verification")
           .classList.remove("password-mismatch");
       }
     },
@@ -72,7 +72,7 @@ export default {
         .dispatch("registerUser", {
           username: document.getElementById("username").value,
           password: document.getElementById("password").value,
-          passwordVerif: document.getElementById("password-verif").value,
+          passwordVerif: document.getElementById("verification").value,
         })
         .then(() => {
           this.$router.push({ name: "login" });

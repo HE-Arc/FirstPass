@@ -13,7 +13,7 @@ export default {
 <template>
   <RouterLink
     class="vault-link"
-    :to="'/vault/' + vaultId"
+    :to="'/vaults/' + vaultId"
     :vault-name="vaultName"
   >
     <div class="card">

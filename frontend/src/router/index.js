@@ -21,12 +21,17 @@ export const router = createRouter({
       component: VaultsView,
     },
     {
-      path: "/vault/:id",
+      path: "/vaults/:id",
       name: "vault",
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/VaultDetailView.vue?id=:id"),
+    },
+    {
+      path: "/vaults/new-vault",
+      name: "new-vault",
+      component: () => import("../views/NewVaultView.vue"),
     },
     { ...accountRoutes },
     {

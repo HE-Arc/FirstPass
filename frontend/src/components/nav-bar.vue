@@ -81,18 +81,18 @@ export default {
     </div>
     <div class="toggleable-section" id="primary-navigation">
       <div class="navbar-links navbar-section">
-        <RouterLink to="Vaults" class="nav-link" v-show="logged"
+        <RouterLink to="/vaults" class="nav-link" v-show="logged"
           >Vaults</RouterLink
         >
-        <RouterLink to="Account" class="nav-link" v-show="logged"
+        <RouterLink to="/account" class="nav-link" v-show="logged"
           >Account</RouterLink
         >
       </div>
       <div class="navbar-buttons navbar-section">
-        <RouterLink to="login" class="nav-link" v-show="!logged"
+        <RouterLink to="/account/login" class="nav-link" v-show="!logged"
           >Login</RouterLink
         >
-        <RouterLink to="register">
+        <RouterLink to="/account/register">
           <button class="navbar-buttons--signup" v-show="!logged">
             Sign Up
           </button>
@@ -108,10 +108,12 @@ export default {
   text-decoration: none;
   font-size: 2rem;
 }
+
 .logo-first-word {
   color: var(--color-text);
   transition: all 0.2s ease-in-out;
 }
+
 .logo-second-word {
   color: var(--lastpass-red);
   transition: all 0.2s ease-in-out;
@@ -120,9 +122,11 @@ export default {
 .nav-logo-link:hover .logo-first-word {
   color: var(--lastpass-red);
 }
+
 .nav-logo-link:hover .logo-second-word {
   color: var(--color-text);
 }
+
 .navbar {
   top: 0;
   left: 0;
@@ -246,34 +250,41 @@ export default {
   0% {
     stroke-dashoffset: 0;
   }
+
   40% {
     stroke-dashoffset: 79.9;
   }
+
   60% {
     stroke-dashoffset: 79.9;
     -webkit-rotate: var(--rotation);
     rotate: var(--rotation);
   }
+
   100% {
     stroke-dashoffset: 0;
     -webkit-rotate: var(--rotation);
     rotate: var(--rotation);
   }
 }
+
 @keyframes to-open-icon {
   0% {
     stroke-dashoffset: 0;
     -webkit-rotate: var(--rotation);
     rotate: var(--rotation);
   }
+
   40% {
     stroke-dashoffset: 79.9;
     -webkit-rotate: var(--rotation);
     rotate: var(--rotation);
   }
+
   60% {
     stroke-dashoffset: 79.9;
   }
+
   100% {
     stroke-dashoffset: 0;
   }
@@ -322,6 +333,7 @@ export default {
     position: relative;
     padding: 0;
   }
+
   .nav-toggle-button {
     display: none;
     position: absolute;
@@ -332,6 +344,7 @@ export default {
     outline: none;
     cursor: pointer;
   }
+
   .navbar {
     top: 0;
     position: sticky;
@@ -344,6 +357,7 @@ export default {
     height: var(--navbar-height);
     width: 100%;
   }
+
   .navbar-section {
     display: flex;
     flex-direction: row;

@@ -1,25 +1,19 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
-import loginPart from "../components/login-part.vue";
+import createVaultForm from "../components/create-vault-form.vue";
 
-import { useAuthStore } from "../stores/auth.store";
-import { router } from "../router";
-
-const authStore = useAuthStore();
-if (authStore.user) router.push("/");
-
-document.title = "FirstPass - Login";
+document.title = "FirstPass - Create Vault";
 </script>
 <template>
   <header>
-    <navBar />
+    <navBar></navBar>
   </header>
-  <div class="login">
-    <loginPart />
+  <div class="main">
+    <createVaultForm></createVaultForm>
   </div>
 </template>
 <style scoped>
-.login {
+.main {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,7 +25,7 @@ document.title = "FirstPass - Login";
 }
 
 @media screen and (min-width: 1024px) {
-  .login {
+  .main {
     width: 40%;
   }
 }

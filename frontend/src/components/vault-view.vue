@@ -43,6 +43,9 @@ export default {
         />
       </tbody>
     </table>
+    <div class="add-btn-container">
+      <a href="" class="btn-add"><i class="fa-solid fa-plus"></i></a>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -86,6 +89,26 @@ export default {
   width: fit-content;
 }
 
+.add-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 1rem;
+}
+
+.btn-add {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--lastpass-red);
+  color: whitesmoke;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: all 0.5s ease-in-out;
+}
+
 @media (min-width: 1024px) {
   .container {
     margin-inline: 5rem;
@@ -111,6 +134,16 @@ export default {
   }
   .vault-table-heading-item {
     font-size: 1.2rem;
+  }
+
+  .btn-add::after {
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    content: "Add Entry";
+  }
+  .btn-add:hover {
+    background-color: var(--lastpass-red-dark);
   }
 }
 </style>

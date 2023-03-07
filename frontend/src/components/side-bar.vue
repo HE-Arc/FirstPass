@@ -1,5 +1,6 @@
 <script setup>
 import sideBarElement from "./side-bar-element.vue";
+import { useVaultsStore } from "../stores/vaults.store";
 </script>
 <script>
 export default {
@@ -7,22 +8,40 @@ export default {
     vaultId: Number,
     vaultName: String,
   },
+  methods: {
+    async getVaults() {
+      this.dataReady = false;
+      this.vaults = [];
+      const vaultStore = useVaultsStore();
+      this.vaults = await vaultStore.getUserVaults();
+      this.dataReady = true;
+      console.log(this.vaults);
+      return this.vaults;
+    },
+  },
+  data() {
+    return {
+      vaults: this.getVaults(),
+      dataReady: this.dataReady,
+    };
+  },
 };
 </script>
 <template>
   <aside class="vault-aside">
+    <div class="wrapper loading-container" v-if="!dataReady">
+      <div class="loader"></div>
+    </div>
+  </aside>
+  <aside class="vault-aside" v-if="dataReady">
     <h1>Vaults</h1>
-    <sideBarElement :vaultId="1" vaultName="vault1" />
-    <sideBarElement :vaultId="2" vaultName="vault2" />
-    <sideBarElement :vaultId="3" vaultName="vault3" />
-    <sideBarElement :vaultId="4" vaultName="vault4" />
-    <sideBarElement :vaultId="5" vaultName="vault5" />
-    <sideBarElement :vaultId="6" vaultName="vault6" />
-    <sideBarElement :vaultId="7" vaultName="vault7" />
-    <sideBarElement :vaultId="8" vaultName="vault8" />
-    <sideBarElement :vaultId="9" vaultName="vault9" />
-    <sideBarElement :vaultId="10" vaultName="vault10" />
-    <sideBarElement :vaultId="11" vaultName="vault11" />
+    <sideBarElement
+      v-for="vault in vaults"
+      :key="vault.id"
+      :vaultId="vault.id"
+      :vaultName="vault.name"
+      :currentVaultId="vaultId"
+    />
   </aside>
 </template>
 
