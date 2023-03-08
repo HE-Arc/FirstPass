@@ -35,7 +35,7 @@ export const useVaultsStore = defineStore({
 
         await fetchWrapper.post(`${baseUrl}/new/`, {
           name,
-          image_path: path,
+          path,
           userID,
         });
         this.vaults = this.getUserVaults();
