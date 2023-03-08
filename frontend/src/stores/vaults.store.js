@@ -38,7 +38,7 @@ export const useVaultsStore = defineStore({
           path,
           userID,
         });
-        this.vaults = this.getUserVaults();
+        this.vaults = await this.getUserVaults();
         router.push({
           name: "vaults",
         });
