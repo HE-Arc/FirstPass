@@ -39,7 +39,7 @@ export const useVaultsStore = defineStore({
           userID,
         });
         this.vaults.push(response);
-        this.getUserVaults();
+        await this.getUserVaults();
         router.push({ name: "vaults" });
       } catch (error) {
         const alertStore = useAlertStore();
