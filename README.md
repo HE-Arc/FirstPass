@@ -6,4 +6,4 @@ Gestionnaire de mots de passe
 - Stouder Xavier
 
 https://first-pass.k8s.ing.he-arc.ch/
-https://api-first-pass.k8s.ing.he-arc.ch/
+https://first-pass.k8s.ing.he-arc.ch/api
