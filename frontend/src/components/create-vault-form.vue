@@ -13,7 +13,7 @@ async function onSubmit(values) {
   const vaultsStore = useVaultsStore();
   const imagesStore = useImagesStore();
   let path =
-    "https://images.unsplash.com/photo-1676310483825-daa08914445e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8";
+    "https://i.imgur.com/ahrCMAH.gif";
   //   if (values.image) {
   //     path = await imagesStore.saveImage(values.imagePath);
   //   }
