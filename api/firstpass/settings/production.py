@@ -42,3 +42,7 @@ DATABASES = {
 }
 
 SECRET_KEY = db_datas['password']
+
+ALLOWED_HOSTS = [
+    'first-pass.k8s.ing.he-arc.ch'
+]
