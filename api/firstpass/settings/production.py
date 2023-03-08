@@ -3,7 +3,7 @@ import os
 DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
-    "https://firstpass.k8s.ing.he-arc.ch",
+    "https://first-pass.k8s.ing.he-arc.ch",
 ]
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
