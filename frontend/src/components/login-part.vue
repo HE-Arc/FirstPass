@@ -1,6 +1,8 @@
 <script setup>
+import { storeToRefs } from "pinia";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
+import { useAlertStore } from "../stores/alert.store";
 import { useAuthStore } from "../stores/auth.store";
 
 const schema = yup.object().shape({
@@ -14,8 +16,15 @@ async function onSubmit(values) {
   await authStore.login(username, password);
 }
 </script>
+<script>
+const alertStore = useAlertStore();
+const { alert } = storeToRefs(alertStore);
+</script>
 <template>
   <div class="login-container">
+    <div v-if="alert" :class="alert.type">
+      {{ alert.message }}
+    </div>
     <Form
       @submit="onSubmit"
       :validation-schema="schema"
