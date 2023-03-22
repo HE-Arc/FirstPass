@@ -2,7 +2,6 @@
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import { useVaultsStore } from "../stores/vaults.store";
-import { useImagesStore } from "../stores/images.store";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -11,7 +10,6 @@ const schema = yup.object().shape({
 
 async function onSubmit(values) {
   const vaultsStore = useVaultsStore();
-  const imagesStore = useImagesStore();
   let path =
     "https://images.unsplash.com/photo-1676310483825-daa08914445e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8";
   // if (values.image) {

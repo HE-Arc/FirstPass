@@ -3,7 +3,31 @@ import navBar from "../components/nav-bar.vue";
 import vault from "../components/vault-view.vue";
 import sideBar from "../components/side-bar.vue";
 
+import { useVaultsStore } from "../stores/vaults.store";
+
 document.title = "FirstPass - Vault";
+</script>
+
+<script>
+export default {
+  props: {
+    vaultId: Number,
+    vaultName: String,
+  },
+  methods: {
+    async getVault() {
+      const vaultStore = useVaultsStore();
+      this.vault = await vaultStore.getVault(this.vaultId);
+      this.dataReady = true;
+    },
+  },
+  data() {
+    return {
+      vault: this.getVault(),
+      dataReady: this.dataReady,
+    };
+  },
+};
 </script>
 
 <template>
@@ -13,7 +37,7 @@ document.title = "FirstPass - Vault";
   <body>
     <div class="main">
       <sideBar />
-      <vault vault-name="Vault test name" />
+      <vault :vault-name="vaultName" :vaultId="vaultId" />
     </div>
   </body>
 </template>

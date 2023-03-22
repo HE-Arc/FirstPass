@@ -6,7 +6,7 @@ from django.views.decorators.http import require_POST
 from django.core.files.storage import Storage
 from rest_framework import viewsets
 from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer
-from .models import Account, AccountVaultAccess, Vault, Invitation
+from .models import Account, AccountVaultAccess, Pair, Vault, Invitation
 from .models import create_user_account, save_user_account
 
 
@@ -24,9 +24,11 @@ class VaultViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Vault.objects.all()
     serializer_class = VaultSerializer
 
+
 class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Invitation.objects.all()
     serializer_class = InvitationSerializer
+
 
 @require_POST
 def login_view(request):
@@ -112,28 +114,34 @@ def get_vaults_for_user(request, user_id):
                            'image_path': vault.image_path})
     return JsonResponse(data={'vaults': jsonVaults}, status=200)
 
+
 def get_invitations_for_user(request, user_id):
     user = User.objects.get(id=user_id)
     account = Account.objects.get(user=user)
     invitations = Invitation.objects.filter(account=account)
     jsonInvitations = []
     for invitation in invitations:
-        jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id, 'vault': invitation.vault.id, 'access_level': invitation.access_level})
+        jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id,
+                               'vault': invitation.vault.id, 'access_level': invitation.access_level})
     return JsonResponse(data={'invitations': jsonInvitations}, status=200)
+
 
 def accept_invitation(request, invitation_id):
     invitation = Invitation.objects.get(id=invitation_id)
     account = invitation.account
     vault = invitation.vault
     access_level = invitation.access_level
-    AccountVaultAccess.objects.create(account=account, vault=vault, access_level=access_level)
+    AccountVaultAccess.objects.create(
+        account=account, vault=vault, access_level=access_level)
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
+
 
 def decline_invitation(request, invitation_id):
     invitation = Invitation.objects.get(id=invitation_id)
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
+
 
 def get_users_for_vault(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
@@ -149,6 +157,7 @@ def get_users_for_vault(request, vault_id):
         jsonUsers.append({'id': user.id, 'username': user.username})
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
+
 def send_invitation(request):
     data = json.loads(request.body)
     accountID = data.get('accountID')
@@ -156,6 +165,31 @@ def send_invitation(request):
     accessLevel = data.get('accessLevel')
     account = Account.objects.get(id=accountID)
     vault = Vault.objects.get(id=vaultID)
-    invitation = Invitation.objects.create(account=account, vault=vault, access_level=accessLevel)
-    jsonInvitation = {'id': invitation.id, 'account': invitation.account.id, 'vault': invitation.vault.id, 'access_level': invitation.access_level}
+    invitation = Invitation.objects.create(
+        account=account, vault=vault, access_level=accessLevel)
+    jsonInvitation = {'id': invitation.id, 'account': invitation.account.id,
+                      'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
+
+
+def get_pairs(request, vault_id):
+    vault = Vault.objects.get(id=vault_id)
+    pairs = vault.pairs.all()
+    jsonPairs = []
+    for pair in pairs:
+        jsonPairs.append({'id': pair.id, 'name': pair.name,
+                          'username': pair.username, 'password': pair.password})
+    return JsonResponse(data={'pairs': jsonPairs}, status=200)
+
+
+def add_pair(request, vault_id):
+    data = json.loads(request.body)
+    name = data.get('name')
+    username = data.get('username')
+    password = data.get('password')
+    vault = Vault.objects.get(id=vault_id)
+    pair = Pair.objects.create(name=name, username=username, password=password)
+    vault.pairs.add(pair)
+    jsonPair = {'id': pair.id, 'name': pair.name,
+                'username': pair.username, 'password': pair.password}
+    return JsonResponse(data={'pair': jsonPair}, status=200)
