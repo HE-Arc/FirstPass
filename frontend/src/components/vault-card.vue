@@ -108,8 +108,6 @@ a {
   background-color: var(--lastpass-dark-grey);
   color: white;
   border-radius: var(--hover-border-radius);
-  -webkit-box-shadow: var(--hover-shadow);
-  -moz-box-shadow: var(--hover-shadow);
   box-shadow: var(--hover-shadow);
   scale: 1.05;
 }
