@@ -1,13 +1,37 @@
 <script setup>
 import vaultTableRow from "./vault-table-row.vue";
+import createPairModal from "./create-pair-modal.vue";
+import { useVaultsStore } from "../stores/vaults.store";
 </script>
 <script>
 export default {
   props: {
+    vaultId: Number,
     vaultName: String,
     thing: String,
     username: String,
     password: String,
+  },
+  methods: {
+    async getPairs() {
+      this.dataReady = false;
+      const vaultStore = useVaultsStore();
+      this.pairs = await vaultStore.getPairs(this.vaultId);
+      this.dataReady = true;
+      console.log(this.pairs);
+      return this.pairs;
+    },
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      async () => {
+        await this.getPairs();
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    );
   },
 };
 </script>
@@ -32,6 +56,13 @@ export default {
       </thead>
       <tbody class="vault-table-body">
         <vaultTableRow
+          v-for="pair in pairs"
+          :key="pair.id"
+          :thing="pair.thing"
+          :username="pair.username"
+          :password="pair.password"
+        />
+        <vaultTableRow
           :thing="'Test1'"
           :username="'user1'"
           :password="'pass1'"
@@ -44,7 +75,7 @@ export default {
       </tbody>
     </table>
     <div class="add-btn-container">
-      <a href="" class="btn-add"><i class="fa-solid fa-plus"></i></a>
+      <createPairModal :vaultId="vaultId" />
     </div>
   </div>
 </template>
