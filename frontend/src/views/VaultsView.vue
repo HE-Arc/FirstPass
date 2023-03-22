@@ -16,9 +16,9 @@ document.title = "FirstPass - Vaults";
       <vaultsContainer></vaultsContainer>
     </div>
     <div class="add-btn-container">
-      <a href="vaults/new-vault" class="btn-add"
-        ><i class="fa-solid fa-plus"></i
-      ></a>
+      <RouterLink to="/vaults/new-vault" class="btn-add">
+        <i class="fa-solid fa-plus"></i>
+      </RouterLink>
     </div>
   </body>
 </template>
