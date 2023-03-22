@@ -174,22 +174,22 @@ def send_invitation(request):
 
 def get_pairs(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
-    pairs = vault.pairs.all()
+    pairs = Pair.objects.filter(vault=vault)
     jsonPairs = []
     for pair in pairs:
-        jsonPairs.append({'id': pair.id, 'name': pair.name,
+        jsonPairs.append({'id': pair.id, 'application': pair.application,
                           'username': pair.username, 'password': pair.password})
     return JsonResponse(data={'pairs': jsonPairs}, status=200)
 
 
 def add_pair(request, vault_id):
     data = json.loads(request.body)
-    name = data.get('name')
+    application = data.get('application')
     username = data.get('username')
     password = data.get('password')
     vault = Vault.objects.get(id=vault_id)
-    pair = Pair.objects.create(name=name, username=username, password=password)
-    vault.pairs.add(pair)
-    jsonPair = {'id': pair.id, 'name': pair.name,
+    pair = Pair.objects.create(
+        application=application, username=username, password=password, vault=vault)
+    jsonPair = {'id': pair.id, 'application': pair.application,
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
