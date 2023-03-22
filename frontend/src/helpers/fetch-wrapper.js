@@ -35,7 +35,9 @@ async function handleResponse(response) {
       location.reload(true);
     }
 
-    const error = (data && data.message) || response.status;
+    console.log("data", data);
+
+    const error = (data && data.errors) || response.status;
     return Promise.reject(error);
   }
   return data;
