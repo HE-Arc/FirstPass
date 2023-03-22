@@ -1,4 +1,5 @@
 <script setup>
+import { storeToRefs } from "pinia";
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 
@@ -20,30 +21,14 @@ const schema = yup.object().shape({
 
 async function onSubmit(values) {
   const usersStore = useUsersStore();
-  const alertStore = useAlertStore();
-  try {
-    let success = await usersStore.register(values);
-    if (success) {
-      await router.push("/login");
-      alertStore.success({
-        type: "success",
-        message: "Registration successful",
-      });
-    } else {
-      alertStore.error({
-        type: "error",
-        message: "Registration failed",
-      });
-    }
-  } catch (error) {
-    alertStore.error({
-      type: "error",
-      message: error,
-    });
-  }
+  await usersStore.register(values);
 }
 </script>
 <script>
+const alertStore = useAlertStore();
+
+const { alert } = storeToRefs(alertStore);
+
 export default {
   name: "register-part",
   data() {
@@ -51,6 +36,7 @@ export default {
       username: "",
       password: "",
       passwordVerif: "",
+      alert,
     };
   },
   methods: {
@@ -83,6 +69,9 @@ export default {
 </script>
 <template>
   <div class="login-container">
+    <div v-if="alert" :class="alert.type">
+      {{ alert.message }}
+    </div>
     <Form
       @submit="onSubmit"
       :validation-schema="schema"

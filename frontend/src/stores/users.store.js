@@ -16,13 +16,17 @@ export const useUsersStore = defineStore({
   }),
   actions: {
     async register(user) {
+      const alertStore = useAlertStore();
       try {
         await fetchWrapper.post(`${baseUrl}/register/`, user);
-        router.push({ name: "Login" });
+        router.push({ name: "login" });
+        alertStore.success({
+          type: "success",
+          message: "Registration successful",
+        });
       } catch (err) {
-        const alertStore = useAlertStore();
-        alertStore.error(err);
-        return false;
+        console.log("err", err);
+        alertStore.error(err[0]);
       }
     },
     async getAll() {
