@@ -5,7 +5,6 @@ import * as yup from "yup";
 
 import { useUsersStore } from "../stores/users.store";
 import { useAlertStore } from "../stores/alert.store";
-import { router } from "../router";
 
 const schema = yup.object().shape({
   username: yup.string().required("Username is required"),

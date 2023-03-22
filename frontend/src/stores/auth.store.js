@@ -27,7 +27,7 @@ export const useAuthStore = defineStore({
         alertStore.success("Login successful");
         myRouter.push({ name: "vaults" });
       } catch (err) {
-        alertStore.error(err);
+        alertStore.error(err[0]);
       }
     },
     logout() {
