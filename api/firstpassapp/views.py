@@ -33,7 +33,7 @@ def login_view(request):
 
     if username is None or password is None:
         return JsonResponse({
-            'errors': {'username': 'Invalid credentials'}
+            'errors': ['Invalid credentials']
         }, status=400)
 
     user = authenticate(username=username, password=password)
@@ -43,7 +43,7 @@ def login_view(request):
         return JsonResponse(data={'user': jsonUser}, status=200)
 
     return JsonResponse({
-        'errors': {'username': 'Invalid credentials'}
+        'errors': ['Invalid credentials']
     }, status=400)
 
 
@@ -56,7 +56,12 @@ def register_view(request):
 
     if username is None or password is None or password != password_verify:
         return JsonResponse({
-            'errors': {'username': 'Invalid credentials'}
+            'errors': ['Invalid credentials']
+        }, status=400)
+
+    if User.objects.filter(username=username).exists():
+        return JsonResponse({
+            'errors': ['User already exists']
         }, status=400)
 
     user = User.objects.create_user(username=username, password=password)
