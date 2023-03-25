@@ -172,6 +172,13 @@ def send_invitation(request):
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
 
 
+def get_vault_by_id(request, vault_id):
+    vault = Vault.objects.get(id=vault_id)
+    jsonVault = {'id': vault.id, 'name': vault.name,
+                 'image_path': vault.image_path}
+    return JsonResponse(data={'vault': jsonVault}, status=200)
+
+
 def get_pairs(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     pairs = Pair.objects.filter(vault=vault)

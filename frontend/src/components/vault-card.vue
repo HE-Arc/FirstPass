@@ -14,8 +14,8 @@ export default {
   <RouterLink
     class="vault-link"
     :to="'/vaults/' + vaultId"
-    :vaultName="vaultName"
-    :vaultId="vaultId"
+    :vault-name="vaultName"
+    :id="Number(vaultId)"
   >
     <div class="card">
       <div class="card-header">

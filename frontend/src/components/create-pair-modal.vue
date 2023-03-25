@@ -19,18 +19,19 @@ export default {
       open: false,
     };
   },
+  emits: ["closed"],
   methods: {
     async onSubmit(values) {
       console.log(values);
       const vaultsStore = useVaultsStore();
       const { application, username, password } = values;
-      console.log(application, username, password);
       await vaultsStore.createPair(
         this.vaultId,
         application,
         username,
         password
       );
+      this.$emit("closed");
       this.open = false;
     },
   },

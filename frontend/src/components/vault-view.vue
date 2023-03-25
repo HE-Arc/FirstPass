@@ -33,6 +33,12 @@ export default {
       { immediate: true }
     );
   },
+  data() {
+    return {
+      pairs: [],
+      dataReady: false,
+    };
+  },
 };
 </script>
 <template>
@@ -54,28 +60,19 @@ export default {
           </th>
         </tr>
       </thead>
-      <tbody class="vault-table-body">
+      <tbody class="vault-table-body" v-if="dataReady">
         <vaultTableRow
-          v-for="pair in pairs"
+          v-for="pair in pairs.pairs"
           :key="pair.id"
-          :thing="pair.thing"
+          :thing="pair.application"
           :username="pair.username"
           :password="pair.password"
         />
-        <vaultTableRow
-          :thing="'Test1'"
-          :username="'user1'"
-          :password="'pass1'"
-        />
-        <vaultTableRow
-          :thing="'Test2'"
-          :username="'user2'"
-          :password="'pass2'"
-        />
       </tbody>
+      <div class="loader" v-else></div>
     </table>
     <div class="add-btn-container">
-      <createPairModal :vaultId="vaultId" />
+      <createPairModal :vaultId="vaultId" @closed="getPairs" />
     </div>
   </div>
 </template>
