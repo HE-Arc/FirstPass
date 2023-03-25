@@ -2,7 +2,7 @@
 import navBar from "../components/nav-bar.vue";
 import vault from "../components/vault-view.vue";
 import sideBar from "../components/side-bar.vue";
-
+import { useRoute } from "vue-router";
 import { useVaultsStore } from "../stores/vaults.store";
 
 document.title = "FirstPass - Vault";
@@ -10,21 +10,34 @@ document.title = "FirstPass - Vault";
 
 <script>
 export default {
-  props: {
-    vaultId: Number,
-    vaultName: String,
-  },
   methods: {
     async getVault() {
       const vaultStore = useVaultsStore();
-      this.vault = await vaultStore.getVault(this.vaultId);
+      this.vaultObj = await vaultStore.getVault(this.getId());
       this.dataReady = true;
+      return this.vaultObj;
     },
+    getId() {
+      const route = useRoute();
+      return Number(route.params.id);
+    },
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      async () => {
+        await this.getVault();
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    );
   },
   data() {
     return {
-      vault: this.getVault(),
-      dataReady: this.dataReady,
+      vaultObj: [],
+      vaultId: this.getId(),
+      dataReady: false,
     };
   },
 };
@@ -35,9 +48,12 @@ export default {
     <navBar />
   </header>
   <body>
-    <div class="main">
-      <sideBar />
-      <vault :vault-name="vaultName" :vaultId="vaultId" />
+    <sideBar />
+    <div class="main" v-if="!dataReady">
+      <div class="loader"></div>
+    </div>
+    <div class="main" v-if="dataReady">
+      <vault :vaultName="this.vaultObj.vault.name" :vaultId="this.vaultId" />
     </div>
   </body>
 </template>

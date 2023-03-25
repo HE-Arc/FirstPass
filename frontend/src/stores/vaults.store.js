@@ -23,6 +23,7 @@ export const useVaultsStore = defineStore({
     async getVault(id) {
       try {
         this.vault = await fetchWrapper.get(`${baseUrl}/${id}`);
+        return this.vault;
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
@@ -79,22 +80,22 @@ export const useVaultsStore = defineStore({
       }
     },
     async createPair(vaultID, application, username, password) {
-      console.log("createPair");
-      console.log(vaultID);
-      console.log(application);
-      console.log(username);
-      console.log(password);
-      // try {
-      //   await fetchWrapper.post(`${baseUrl}/${vaultID}/add`, {
-      //     application,
-      //     username,
-      //     password,
-      //   });
-      //   this.vault = await this.getVault(vaultID);
-      // } catch (error) {
-      //   const alertStore = useAlertStore();
-      //   alertStore.error(error);
-      // }
+      // console.log("createPair");
+      // console.log(vaultID);
+      // console.log(application);
+      // console.log(username);
+      // console.log(password);
+      try {
+        await fetchWrapper.post(`${baseUrl}/${vaultID}/add`, {
+          application,
+          username,
+          password,
+        });
+        this.vault = await this.getVault(vaultID);
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(error);
+      }
     },
     async getPairs(vaultID) {
       try {

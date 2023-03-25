@@ -16,6 +16,7 @@ urlpatterns = [
     path('vaults/new/', views.create_vault, name='create-vault'),
     path('vaults/<int:vault_id>/pairs', views.get_pairs, name='get-pairs'),
     path('vaults/<int:vault_id>/add', views.add_pair, name='add-pair'),
+    path('vaults/<int:vault_id>/', views.get_vault_by_id, name='get-vault-by-id'),
     path('images/save/', views.save_image, name='save-image'),
     path('users/<int:user_id>/invitations/', views.get_invitations_for_user, name='invitations-for-user'),
     path('invitations/<int:invitation_id>/accept/', views.accept_invitation, name='accept-invitation'),
