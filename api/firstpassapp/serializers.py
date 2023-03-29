@@ -34,3 +34,4 @@ class InvitationSerializer(serializers.HyperlinkedModelSerializer):
             "vault",
             "access_level"
         ]
+        
