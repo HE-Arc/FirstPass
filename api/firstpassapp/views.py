@@ -189,6 +189,7 @@ def get_pairs(request, vault_id):
     return JsonResponse(data={'pairs': jsonPairs}, status=200)
 
 
+@require_POST
 def add_pair(request, vault_id):
     data = json.loads(request.body)
     application = data.get('application')
