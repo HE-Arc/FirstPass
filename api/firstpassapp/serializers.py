@@ -25,3 +25,13 @@ class VaultSerializer(serializers.HyperlinkedModelSerializer):
             "name",
             "image_path"
         ]
+        
+class InvitationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Invitation
+        fields = [
+            "account",
+            "vault",
+            "access_level"
+        ]
+        
