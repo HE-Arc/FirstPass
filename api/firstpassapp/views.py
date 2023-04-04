@@ -201,3 +201,20 @@ def add_pair(request, vault_id):
     jsonPair = {'id': pair.id, 'application': pair.application,
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
+
+def update_user(request, user_id):
+    data = json.loads(request.body)
+    username = data.get('username')
+    old_password = data.get('old_password')
+    new_password = data.get('new_password')
+    confirm_password = data.get('confirm_password')
+    user = User.objects.get(id=user_id)
+    if user.check_password(old_password):
+        if new_password == confirm_password:
+            user.username = username
+            user.set_password(new_password)
+            user.save()
+            jsonUser = {'id': user.id, 'username': user.username}
+            return JsonResponse(data={'user': jsonUser}, status=200)
+        return JsonResponse(data={'error': "Passwords do not match"}, status=400)
+    return JsonResponse(data={'error': "Invalid password"}, status=400)

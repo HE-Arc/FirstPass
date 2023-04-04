@@ -23,5 +23,6 @@ urlpatterns = [
     path('invitations/<int:invitation_id>/decline/', views.decline_invitation, name='decline-invitation'),
     path('vaults/<int:vault_id>/users/', views.get_users_for_vault, name='users-for-vault'),
     path('invitations/new/', views.send_invitation, name='send-invitation'),
+    path('users/update/', views.update_user, name='update-user'),
     path('', include(router.urls))
 ]
