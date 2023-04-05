@@ -232,7 +232,7 @@ export default {
 }
 
 .nav-toggle-button[data-state="opened"] .hamburger {
-  -webkit-rotate: 1turn;
+  --webkit-rotate: 1turn;
   rotate: 1turn;
 }
 
