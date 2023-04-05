@@ -6,7 +6,8 @@ import { useAlertStore } from "./alert.store";
 
 import { router } from "../router";
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
+const authURL = `${import.meta.env.VITE_API_URL}/auth`;
+const userURL = `${import.meta.env.VITE_API_URL}/users`;
 
 export const useUsersStore = defineStore({
   id: "users",
@@ -18,7 +19,7 @@ export const useUsersStore = defineStore({
     async register(user) {
       const alertStore = useAlertStore();
       try {
-        await fetchWrapper.post(`${baseUrl}/register/`, user);
+        await fetchWrapper.post(`${authURL}/register/`, user);
         router.push({ name: "login" });
         alertStore.success({
           type: "success",
@@ -32,7 +33,7 @@ export const useUsersStore = defineStore({
     async getAll() {
       this.user = { loading: true };
       try {
-        this.users = await fetchWrapper.get(baseUrl);
+        this.users = await fetchWrapper.get(authURL);
       } catch (err) {
         const alertStore = useAlertStore();
         alertStore.error(err);
@@ -42,20 +43,37 @@ export const useUsersStore = defineStore({
       this.user = { loading: true };
 
       try {
-        this.user = await fetchWrapper.get(`${baseUrl}/${id}`);
+        this.user = await fetchWrapper.get(`${authURL}/${id}`);
       } catch (err) {
         const alertStore = useAlertStore();
         alertStore.error(err);
       }
     },
-    async update(id, params) {
+    async getByUsername(username) {
+      this.user = { loading: true };
       try {
-        await fetchWrapper.put(`${baseUrl}/${id}`, params);
+        this.user = await fetchWrapper.get(`${userURL}/${username}`);
+        return this.user;
+      } catch (err) {
+        const alertStore = useAlertStore();
+        alertStore.error(err);
+      }
+    },
+    async update(params) {
+      const alertStore = useAlertStore();
+      try {
+        const user = await this.getByUsername(params.username);
+        let id = user.user.id;
+        await fetchWrapper.post(`${userURL}/${id}/`, params);
         const authStore = useAuthStore();
         if (id === authStore.user.id) {
           const user = { ...authStore.user, ...params };
           authStore.user = user;
           localStorage.setItem("user", JSON.stringify(user));
+          alertStore.addAlert({
+            type: "success",
+            message: "User updated successfully",
+          });
         }
       } catch (err) {
         const alertStore = useAlertStore();
@@ -65,7 +83,7 @@ export const useUsersStore = defineStore({
     async delete(id) {
       this.users.find((x) => x.id === id).isDeleting = true;
       try {
-        await fetchWrapper.delete(`${baseUrl}/${id}`);
+        await fetchWrapper.delete(`${authURL}/${id}`);
         this.users = this.users.filter((x) => x.id !== id);
 
         const authStore = useAuthStore();

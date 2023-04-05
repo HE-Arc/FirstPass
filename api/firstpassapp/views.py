@@ -91,6 +91,7 @@ def create_vault(request):
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
+
 @require_POST
 def save_image(request):
     if request.FILES['image']:
@@ -99,6 +100,7 @@ def save_image(request):
         storage.save(image.name, image)
         return JsonResponse(data={'image': image}, status=200)
     return JsonResponse(data={'image': None}, status=400)
+
 
 @require_GET
 def get_vaults_for_user(request, user_id):
@@ -114,6 +116,7 @@ def get_vaults_for_user(request, user_id):
                            'image_path': vault.image_path})
     return JsonResponse(data={'vaults': jsonVaults}, status=200)
 
+
 @require_GET
 def get_invitations_for_user(request, user_id):
     user = User.objects.get(id=user_id)
@@ -124,6 +127,7 @@ def get_invitations_for_user(request, user_id):
         jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id,
                                'vault': invitation.vault.id, 'access_level': invitation.access_level})
     return JsonResponse(data={'invitations': jsonInvitations}, status=200)
+
 
 @require_POST
 def accept_invitation(request, invitation_id):
@@ -136,11 +140,13 @@ def accept_invitation(request, invitation_id):
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
 
+
 @require_POST
 def decline_invitation(request, invitation_id):
     invitation = Invitation.objects.get(id=invitation_id)
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
+
 
 @require_GET
 def get_users_for_vault(request, vault_id):
@@ -157,6 +163,7 @@ def get_users_for_vault(request, vault_id):
         jsonUsers.append({'id': user.id, 'username': user.username})
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
+
 @require_POST
 def send_invitation(request):
     data = json.loads(request.body)
@@ -171,12 +178,14 @@ def send_invitation(request):
                       'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
 
+
 @require_GET
 def get_vault_by_id(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
+
 
 @require_GET
 def get_pairs(request, vault_id):
@@ -202,6 +211,7 @@ def add_pair(request, vault_id):
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
 
+
 @require_POST
 def update_user(request, user_id):
     data = json.loads(request.body)
@@ -219,3 +229,10 @@ def update_user(request, user_id):
             return JsonResponse(data={'user': jsonUser}, status=200)
         return JsonResponse(data={'error': "Passwords do not match"}, status=400)
     return JsonResponse(data={'error': "Invalid password"}, status=400)
+
+
+@require_GET
+def get_user_by_username(request, username):
+    user = User.objects.get(username=username)
+    jsonUser = {'id': user.id, 'username': user.username}
+    return JsonResponse(data={'user': jsonUser}, status=200)
