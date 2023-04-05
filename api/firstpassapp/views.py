@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.core.files.storage import Storage
 from rest_framework import viewsets
 from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer
@@ -91,7 +91,7 @@ def create_vault(request):
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
-
+@require_POST
 def save_image(request):
     if request.FILES['image']:
         image = request.FILES['image']
@@ -100,7 +100,7 @@ def save_image(request):
         return JsonResponse(data={'image': image}, status=200)
     return JsonResponse(data={'image': None}, status=400)
 
-
+@require_GET
 def get_vaults_for_user(request, user_id):
     user = User.objects.get(id=user_id)
     account = Account.objects.get(user=user)
@@ -114,7 +114,7 @@ def get_vaults_for_user(request, user_id):
                            'image_path': vault.image_path})
     return JsonResponse(data={'vaults': jsonVaults}, status=200)
 
-
+@require_GET
 def get_invitations_for_user(request, user_id):
     user = User.objects.get(id=user_id)
     account = Account.objects.get(user=user)
@@ -125,7 +125,7 @@ def get_invitations_for_user(request, user_id):
                                'vault': invitation.vault.id, 'access_level': invitation.access_level})
     return JsonResponse(data={'invitations': jsonInvitations}, status=200)
 
-
+@require_POST
 def accept_invitation(request, invitation_id):
     invitation = Invitation.objects.get(id=invitation_id)
     account = invitation.account
@@ -136,13 +136,13 @@ def accept_invitation(request, invitation_id):
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
 
-
+@require_POST
 def decline_invitation(request, invitation_id):
     invitation = Invitation.objects.get(id=invitation_id)
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
 
-
+@require_GET
 def get_users_for_vault(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     account_vaults = AccountVaultAccess.objects.filter(vault=vault)
@@ -157,7 +157,7 @@ def get_users_for_vault(request, vault_id):
         jsonUsers.append({'id': user.id, 'username': user.username})
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
-
+@require_POST
 def send_invitation(request):
     data = json.loads(request.body)
     accountID = data.get('accountID')
@@ -171,14 +171,14 @@ def send_invitation(request):
                       'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
 
-
+@require_GET
 def get_vault_by_id(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
-
+@require_GET
 def get_pairs(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     pairs = Pair.objects.filter(vault=vault)
@@ -201,3 +201,21 @@ def add_pair(request, vault_id):
     jsonPair = {'id': pair.id, 'application': pair.application,
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
+
+@require_POST
+def update_user(request, user_id):
+    data = json.loads(request.body)
+    username = data.get('username')
+    old_password = data.get('old_password')
+    new_password = data.get('new_password')
+    confirm_password = data.get('confirm_password')
+    user = User.objects.get(id=user_id)
+    if user.check_password(old_password):
+        if new_password == confirm_password:
+            user.username = username
+            user.set_password(new_password)
+            user.save()
+            jsonUser = {'id': user.id, 'username': user.username}
+            return JsonResponse(data={'user': jsonUser}, status=200)
+        return JsonResponse(data={'error': "Passwords do not match"}, status=400)
+    return JsonResponse(data={'error': "Invalid password"}, status=400)
