@@ -2,6 +2,7 @@
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
 import { useVaultsStore } from "../stores/vaults.store";
+import { router } from "../router";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -18,6 +19,7 @@ async function onSubmit(values) {
   // console.log(path);
   const { name } = values;
   await vaultsStore.createVault(name, path);
+  router.push({ name: "vaults" });
 }
 </script>
 <template>

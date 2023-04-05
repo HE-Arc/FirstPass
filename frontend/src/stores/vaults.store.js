@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { fetchWrapper } from "../helpers/fetch-wrapper";
-import { router } from "../router";
 import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/vaults`;
@@ -34,15 +33,12 @@ export const useVaultsStore = defineStore({
         let user = JSON.parse(localStorage.getItem("user"));
         let userID = user.user.id;
 
-        await fetchWrapper.post(`${baseUrl}/new/`, {
+        await fetchWrapper.post(`${baseUrl}/`, {
           name,
           path,
           userID,
         });
         this.vaults = await this.getUserVaults();
-        router.push({
-          name: "vaults",
-        });
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
