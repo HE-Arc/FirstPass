@@ -19,7 +19,7 @@ async function onSubmit(values) {
   // console.log(path);
   const { name } = values;
   await vaultsStore.createVault(name, path);
-  router.push({ name: "vaults" });
+  router.push("/vaults");
 }
 </script>
 <template>
