@@ -34,7 +34,7 @@ export const useVaultsStore = defineStore({
         let user = JSON.parse(localStorage.getItem("user"));
         let userID = user.user.id;
 
-        await fetchWrapper.post(`${baseUrl}/new/`, {
+        await fetchWrapper.post(`${baseUrl}/`, {
           name,
           path,
           userID,
@@ -71,7 +71,9 @@ export const useVaultsStore = defineStore({
       let user = JSON.parse(localStorage.getItem("user"));
       let userID = user.user.id;
       try {
-        let vaults = await fetchWrapper.get(`${import.meta.env.VITE_API_URL}/users/${userID}/vaults`);
+        let vaults = await fetchWrapper.get(
+          `${import.meta.env.VITE_API_URL}/users/${userID}/vaults`
+        );
         this.vaults = vaults.vaults;
         return this.vaults;
       } catch (error) {
