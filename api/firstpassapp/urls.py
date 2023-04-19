@@ -25,12 +25,14 @@ urlpatterns = [
          views.accept_invitation, name='accept-invitation'),
     path('invitations/<int:invitation_id>/decline/',
          views.decline_invitation, name='decline-invitation'),
+    path('invitations/', views.route_invitations, name='route-invitations'),
     path('vaults/<int:vault_id>/users/',
          views.get_users_for_vault, name='users-for-vault'),
-    path('invitations/', views.send_invitation, name='send-invitation'),
-    path('users/<int:user_id>/', views.update_user,
+    path('users/<int:user_id>/', views.route_user,
          name='update-user'),
     path('users/<str:username>/', views.get_user_by_username,
          name='get-user-by-username'),
+    path('users/<int:user_id>/', views.route_user,
+         name='get-user-by-id'),
     path('', include(router.urls))
 ]

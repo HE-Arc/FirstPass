@@ -2,7 +2,8 @@ import { defineStore } from "pinia";
 import { fetchWrapper } from "../helpers/fetch-wrapper";
 import { useAlertStore } from "./alert.store";
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/invites`;
+const invitesUrl = `${import.meta.env.VITE_API_URL}/invitations`;
+const userUrl = `${import.meta.env.VITE_API_URL}/users`;
 
 export const useInvitesStore = defineStore({
   id: "invites",
@@ -13,30 +14,21 @@ export const useInvitesStore = defineStore({
   actions: {
     async getUserInvites(userId) {
       try {
-        this.invites = await fetchWrapper.get(`${baseUrl}/user/${userId}`);
+        this.invites = await fetchWrapper.get(
+          `${userUrl}/${userId}/invitations/`
+        );
+        return this.invites;
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
       }
     },
-    async getInvite(id) {
+    async createInvite(vaultID, accountId, accessLevel) {
       try {
-        this.invite = await fetchWrapper.get(`${baseUrl}/${id}`);
-        return this.invite;
-      } catch (error) {
-        const alertStore = useAlertStore();
-        alertStore.error(error);
-      }
-    },
-    async createInvite(vaultID, email) {
-      try {
-        let user = JSON.parse(localStorage.getItem("user"));
-        let userID = user.user.id;
-
-        await fetchWrapper.post(`${baseUrl}/`, {
+        await fetchWrapper.post(`${invitesUrl}/`, {
           vaultID,
-          email,
-          userID,
+          accessLevel,
+          accountId,
         });
         this.invites = await this.getUserInvites();
       } catch (error) {
@@ -46,7 +38,16 @@ export const useInvitesStore = defineStore({
     },
     async acceptInvite(id) {
       try {
-        await fetchWrapper.put(`${baseUrl}/${id}`);
+        await fetchWrapper.put(`${invitesUrl}/${id}/accept/`);
+        this.invites = this.invites.filter((i) => i.id !== id);
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(error);
+      }
+    },
+    async declineInvite(id) {
+      try {
+        await fetchWrapper.put(`${invitesUrl}/${id}/decline/`);
         this.invites = this.invites.filter((i) => i.id !== id);
       } catch (error) {
         const alertStore = useAlertStore();

@@ -1,46 +1,86 @@
 <script setup>
 import { useInvitesStore } from "../stores/invites.store";
+import { useUsersStore } from "../stores/users.store";
+import { useVaultsStore } from "../stores/vaults.store";
+</script>
+<script>
+export default {
+  methods: {
+    async getInvites() {
+      this.dataReady = false;
+      const invitesStore = useInvitesStore();
+      const usersStore = useUsersStore();
+      const vaultsStore = useVaultsStore();
 
-const invitesStore = useInvitesStore();
-let user = localStorage.getItem("user");
-invitesStore.getUserInvites(user.id);
-const invites = invitesStore.invites;
+      const user = JSON.parse(localStorage.getItem("user")).user;
+      const inv = await invitesStore.getUserInvites(user.id);
+      this.invites = inv.invitations;
+      for (let i = 0; i < this.invites.length; i++) {
+        const vault = await vaultsStore.getVault(this.invites[i].vault);
+        const user = await usersStore.getById(this.invites[i].account);
+        this.invites[i] = {
+          ...this.invites[i],
+          vaultName: vault.vault.name,
+          username: user.user.username,
+        };
+        console.log(this.invites[i]);
+      }
+      this.dataReady = true;
+    },
+  },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      async () => {
+        await this.getInvites();
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    );
+  },
+  data() {
+    return {
+      invites: [],
+      dataReady: false,
+    };
+  },
+};
 </script>
 <template>
   <div class="contain">
-    <table class="invite-table">
+    <table class="invite-table" v-if="invites && dataReady">
       <thead class="table-head">
         <tr class="table-row">
-          <th>Invitee</th>
+          <th>Vault</th>
           <th>Inviter</th>
-          <th>Invite Date</th>
-          <th>Invite Status</th>
           <th></th>
         </tr>
       </thead>
       <tbody class="table-body">
         <tr class="table-row" v-for="invite in invites" :key="invite.id">
-          <td>{{ invite.email }}</td>
-          <td>{{}}</td>
-          <td>{{}}</td>
-          <td>{{}}</td>
+          <td>{{ invite.vaultName }}</td>
+          <td>{{ invite.username }}</td>
           <td>
-            <button class="btn btn-accept">Accept</button>
-            <button class="btn btn-decline">Decline</button>
-          </td>
-        </tr>
-        <tr class="table-row">
-          <td>Invitee</td>
-          <td>Invited</td>
-          <td>date</td>
-          <td>status</td>
-          <td>
-            <button class="btn btn-accept">Accept</button>
-            <button class="btn btn-decline">Decline</button>
+            <button
+              class="btn btn-accept"
+              @click="invitesStore.acceptInvite(invite.id)"
+            >
+              Accept
+            </button>
+            <button
+              class="btn btn-decline"
+              @click="invitesStore.declineInvite(invite.id)"
+            >
+              Decline
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div v-else>
+      <h1>No invites</h1>
+    </div>
   </div>
 </template>
 <style scoped>

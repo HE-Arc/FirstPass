@@ -30,6 +30,13 @@ class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = InvitationSerializer
 
 
+def route_user(request, user_id):
+    if request.method == 'GET':
+        return get_user_by_id(request, user_id)
+    elif request.method == 'POST':
+        return update_user(request, user_id)
+
+
 @require_POST
 def login_view(request):
     data = json.loads(request.body)
@@ -164,6 +171,24 @@ def get_users_for_vault(request, vault_id):
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
 
+def route_invitations(request):
+    if request.method == 'GET':
+        return get_invitations(request)
+    elif request.method == 'POST':
+        return send_invitation(request)
+    return JsonResponse(data={'error': 'Invalid request'}, status=400)
+
+
+@require_GET
+def get_invitations(request):
+    invitations = Invitation.objects.all()
+    jsonInvitations = []
+    for invitation in invitations:
+        jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id,
+                               'vault': invitation.vault.id, 'access_level': invitation.access_level})
+    return JsonResponse(data={'invitations': jsonInvitations}, status=200)
+
+
 @require_POST
 def send_invitation(request):
     data = json.loads(request.body)
@@ -234,5 +259,12 @@ def update_user(request, user_id):
 @require_GET
 def get_user_by_username(request, username):
     user = User.objects.get(username=username)
+    jsonUser = {'id': user.id, 'username': user.username}
+    return JsonResponse(data={'user': jsonUser}, status=200)
+
+
+@require_GET
+def get_user_by_id(request, user_id):
+    user = User.objects.get(id=user_id)
     jsonUser = {'id': user.id, 'username': user.username}
     return JsonResponse(data={'user': jsonUser}, status=200)

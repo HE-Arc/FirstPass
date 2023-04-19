@@ -30,20 +30,11 @@ export const useUsersStore = defineStore({
         alertStore.error(err[0]);
       }
     },
-    async getAll() {
-      this.user = { loading: true };
-      try {
-        this.users = await fetchWrapper.get(authURL);
-      } catch (err) {
-        const alertStore = useAlertStore();
-        alertStore.error(err);
-      }
-    },
     async getById(id) {
       this.user = { loading: true };
-
       try {
-        this.user = await fetchWrapper.get(`${authURL}/${id}`);
+        this.user = await fetchWrapper.get(`${userURL}/${id}/`);
+        return this.user;
       } catch (err) {
         const alertStore = useAlertStore();
         alertStore.error(err);
@@ -52,7 +43,7 @@ export const useUsersStore = defineStore({
     async getByUsername(username) {
       this.user = { loading: true };
       try {
-        this.user = await fetchWrapper.get(`${userURL}/${username}`);
+        this.user = await fetchWrapper.get(`${userURL}/${username}/`);
         return this.user;
       } catch (err) {
         const alertStore = useAlertStore();
@@ -83,7 +74,7 @@ export const useUsersStore = defineStore({
     async delete(id) {
       this.users.find((x) => x.id === id).isDeleting = true;
       try {
-        await fetchWrapper.delete(`${authURL}/${id}`);
+        await fetchWrapper.delete(`${authURL}/${id}/`);
         this.users = this.users.filter((x) => x.id !== id);
 
         const authStore = useAuthStore();
