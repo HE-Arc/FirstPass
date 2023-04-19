@@ -21,6 +21,7 @@ export default {
     async getVault() {
       const vaultStore = useVaultsStore();
       const { vault } = await vaultStore.getVault(this.vaultId);
+      this.vault = vault;
       return vault;
     },
     async getPairs() {
@@ -38,7 +39,6 @@ export default {
       const { vault } = await vaultStore.getVault(this.vaultId);
       vault.name = values.name;
       await vaultStore.updateVault(vault);
-      this.vaultName = values.name;
       this.vault = vault;
       this.toggleEditingTitle();
     },
@@ -48,7 +48,6 @@ export default {
       () => this.$route.params,
       async () => {
         await this.getPairs();
-        this.vault = await this.getVault();
       },
       // fetch the data when the view is created and the data is
       // already being observed
@@ -57,7 +56,7 @@ export default {
   },
   data() {
     return {
-      vault: {},
+      vault: this.getVault(),
       pairs: [],
       dataReady: false,
       editingTitle: false,
