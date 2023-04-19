@@ -84,6 +84,9 @@ export default {
         <RouterLink to="/vaults" class="nav-link" v-show="logged"
           >Vaults</RouterLink
         >
+        <RouterLink to="/invites" class="nav-link" v-show="logged"
+          >Invites</RouterLink
+        >
         <RouterLink to="/account" class="nav-link" v-show="logged"
           >Account</RouterLink
         >
