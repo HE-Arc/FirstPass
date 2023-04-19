@@ -20,7 +20,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-class VaultViewSet(viewsets.ReadOnlyModelViewSet):
+class VaultViewSet(viewsets.ViewSet):
     queryset = Vault.objects.all()
     serializer_class = VaultSerializer
 
@@ -28,7 +28,6 @@ class VaultViewSet(viewsets.ReadOnlyModelViewSet):
 class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Invitation.objects.all()
     serializer_class = InvitationSerializer
-
 
 @require_POST
 def login_view(request):
@@ -171,9 +170,30 @@ def send_invitation(request):
                       'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
 
+def vault_by_id(request, vault_id):
+    if request.method == 'GET':
+        return get_vault_by_id(request, vault_id)
+    elif request.method == 'POST':
+        return update_vault_by_id(request, vault_id)
+    else:
+        return JsonResponse(data={'error': 'Method not allowed'}, status=405)
+
 @require_GET
 def get_vault_by_id(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
+    jsonVault = {'id': vault.id, 'name': vault.name,
+                 'image_path': vault.image_path}
+    return JsonResponse(data={'vault': jsonVault}, status=200)
+
+@require_POST
+def update_vault_by_id(request, vault_id):
+    data = json.loads(request.body)
+    name = data.get('name')
+    image_path = data.get('image_path')
+    vault = Vault.objects.get(id=vault_id)
+    vault.name = name
+    vault.image_path = image_path
+    vault.save()
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
