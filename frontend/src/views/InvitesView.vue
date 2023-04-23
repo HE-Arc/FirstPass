@@ -1,6 +1,8 @@
 <script setup>
 import navBar from "../components/nav-bar.vue";
 import invitesPage from "../components/invites-page.vue";
+
+document.title = "FirstPass - Invitations";
 </script>
 <template>
   <header>
