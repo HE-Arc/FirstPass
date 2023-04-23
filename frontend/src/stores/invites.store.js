@@ -38,8 +38,14 @@ export const useInvitesStore = defineStore({
     },
     async acceptInvite(id) {
       try {
-        await fetchWrapper.put(`${invitesUrl}/${id}/accept/`);
-        this.invites = this.invites.filter((i) => i.id !== id);
+        await fetchWrapper.post(`${invitesUrl}/${id}/accept/`);
+        let invitesCopy = this.invites;
+        for (let i = 0; i < this.invites.length; i++) {
+          if (this.invites[i].id != id) {
+            invitesCopy.push(this.invites[i]);
+          }
+        }
+        this.invites = invitesCopy;
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
@@ -47,7 +53,7 @@ export const useInvitesStore = defineStore({
     },
     async declineInvite(id) {
       try {
-        await fetchWrapper.put(`${invitesUrl}/${id}/decline/`);
+        await fetchWrapper.post(`${invitesUrl}/${id}/decline/`);
         this.invites = this.invites.filter((i) => i.id !== id);
       } catch (error) {
         const alertStore = useAlertStore();

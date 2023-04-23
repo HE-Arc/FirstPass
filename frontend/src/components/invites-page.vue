@@ -27,6 +27,16 @@ export default {
       }
       this.dataReady = true;
     },
+    async acceptInvite(inviteId) {
+      const invitesStore = useInvitesStore();
+      await invitesStore.acceptInvite(inviteId);
+      await this.getInvites();
+    },
+    async declineInvite(inviteId) {
+      const invitesStore = useInvitesStore();
+      await invitesStore.declineInvite(inviteId);
+      await this.getInvites();
+    },
   },
   created() {
     this.$watch(
@@ -64,13 +74,13 @@ export default {
           <td>
             <button
               class="btn btn-accept"
-              @click="invitesStore.acceptInvite(invite.id)"
+              @click="this.acceptInvite(invite.id)"
             >
               Accept
             </button>
             <button
               class="btn btn-decline"
-              @click="invitesStore.declineInvite(invite.id)"
+              @click="this.declineInvite(invite.id)"
             >
               Decline
             </button>
