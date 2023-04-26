@@ -1,12 +1,12 @@
 <script setup>
 import { Form, Field } from "vee-validate";
 import * as yup from "yup";
-import { useVaultsStore } from "../stores/vaults.store";
+import { useInvitesStore } from "../stores/invites.store";
+import { useUsersStore } from "../stores/users.store";
 
 const schema = yup.object().shape({
-  application: yup.string().required(),
-  username: yup.string().required(),
-  password: yup.string().required(),
+  user: yup.string().required(),
+  accessLevel: yup.string().required(),
 });
 </script>
 <script>
@@ -23,14 +23,11 @@ export default {
   methods: {
     async onSubmit(values) {
       console.log(values);
-      const vaultsStore = useVaultsStore();
-      const { application, username, password } = values;
-      await vaultsStore.createPair(
-        this.vaultId,
-        application,
-        username,
-        password
-      );
+      const invitesStore = useInvitesStore();
+      const userStore = useUsersStore();
+      const { user, accessLevel } = values;
+      const userId = userStore.getByUsername(user).id;
+      await invitesStore.createInvite(this.vaultId, userId, accessLevel);
       this.$emit("closed");
       this.open = false;
     },
@@ -39,7 +36,7 @@ export default {
 </script>
 <template>
   <button class="btn btn-create-pair" @click="open = true">
-    Create new login
+    Invite a user
   </button>
 
   <Teleport to="body">
@@ -49,36 +46,22 @@ export default {
       :validation-schema="schema"
       @submit="onSubmit"
     >
-      <h1>Add new login</h1>
+      <h1>Invite</h1>
       <div class="input-group">
-        <label for="application">Thing</label>
-        <Field
-          type="text"
-          placeholder="Thing"
-          id="application"
-          name="application"
-        />
+        <label for="user">Username</label>
+        <Field type="text" placeholder="Username" id="user" name="user" />
       </div>
+
       <div class="input-group">
-        <label for="username">Username</label>
-        <Field
-          type="text"
-          placeholder="Username"
-          id="username"
-          name="username"
-        />
-      </div>
-      <div class="input-group">
-        <label for="password">Password</label>
-        <Field
-          type="text"
-          placeholder="Password"
-          id="password"
-          name="password"
-        />
+        <label for="access">Access level</label>
+        <Field id="accessLevel" name="accessLevel" as="select">
+          <option value="R">Read</option>
+          <option value="W">Write</option>
+          <option value="O">Owner</option>
+        </Field>
       </div>
       <div class="btn-container">
-        <button type="submit" class="btn btn-submit">Create</button>
+        <button type="submit" class="btn btn-submit">Invite</button>
         <button class="btn" @click="open = false">Close</button>
       </div>
     </Form>
@@ -105,7 +88,7 @@ export default {
 }
 
 .btn-create-pair {
-  width: fit-content;
+  width: 10rem;
   align-self: flex-end;
   justify-self: flex-end;
 }
@@ -114,7 +97,6 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 90%;
 }
 
 @media screen and (min-width: 1024px) {
@@ -122,9 +104,6 @@ export default {
     min-width: 30%;
     width: fit-content;
     left: 35%;
-  }
-  .btn-container {
-    flex-direction: row;
   }
 }
 </style>

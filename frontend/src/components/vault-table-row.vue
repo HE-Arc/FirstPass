@@ -45,6 +45,7 @@ export default {
   border: none;
   width: 100%;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .vault-table-body-item button {
