@@ -84,9 +84,6 @@ export default {
         <RouterLink to="/vaults" class="nav-link" v-show="logged"
           >Vaults</RouterLink
         >
-        <RouterLink to="/invites" class="nav-link" v-show="logged"
-          >Invites</RouterLink
-        >
         <RouterLink to="/account" class="nav-link" v-show="logged"
           >Account</RouterLink
         >
@@ -168,9 +165,8 @@ export default {
   align-items: center;
   flex-direction: row;
 
-  width: 100%;
+  width: fit-content;
   height: 3rem;
-  padding-inline: 0.5rem;
 }
 
 .navbar-logo-img {
@@ -236,7 +232,7 @@ export default {
 }
 
 .nav-toggle-button[data-state="opened"] .hamburger {
-  --webkit-rotate: 1turn;
+  -webkit-rotate: 1turn;
   rotate: 1turn;
 }
 

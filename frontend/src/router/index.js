@@ -33,11 +33,6 @@ export const router = createRouter({
       name: "new-vault",
       component: () => import("../views/NewVaultView.vue"),
     },
-    {
-      path: "/invites",
-      name: "invites",
-      component: () => import("../views/InvitesView.vue"),
-    },
     { ...accountRoutes },
     {
       path: "/:pathMatch(.*)*",
