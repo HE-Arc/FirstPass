@@ -27,11 +27,6 @@ export default {
 };
 </script>
 <template>
-  <aside class="vault-aside">
-    <div class="wrapper loading-container" v-if="!dataReady">
-      <div class="loader"></div>
-    </div>
-  </aside>
   <aside class="vault-aside" v-if="dataReady">
     <h1>Vaults</h1>
     <sideBarElement
@@ -41,6 +36,11 @@ export default {
       :vaultName="vault.name"
       :currentVaultId="vaultId"
     />
+  </aside>
+  <aside class="vault-aside" v-else>
+    <div class="wrapper loading-container">
+      <div class="loader"></div>
+    </div>
   </aside>
 </template>
 
