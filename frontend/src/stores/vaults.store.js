@@ -46,7 +46,7 @@ export const useVaultsStore = defineStore({
     },
     async updateVault(vault) {
       try {
-        await fetchWrapper.put(`${baseUrl}/${vault.id}/`, vault);
+        await fetchWrapper.post(`${baseUrl}/${vault.id}/`, vault);
         const index = this.vaults.findIndex((v) => v.id === vault.id);
         this.vaults[index] = vault;
       } catch (error) {

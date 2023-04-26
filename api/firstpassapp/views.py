@@ -171,6 +171,12 @@ def get_users_for_vault(request, vault_id):
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
 
+def vault_by_id(request, vault_id):
+    if request.method == 'GET':
+        return get_vault_by_id(request, vault_id)
+    elif request.method == 'POST':
+        return update_vault_by_id(request, vault_id)
+
 def route_invitations(request):
     if request.method == 'GET':
         return get_invitations(request)
@@ -207,6 +213,19 @@ def send_invitation(request):
 @require_GET
 def get_vault_by_id(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
+    jsonVault = {'id': vault.id, 'name': vault.name,
+                 'image_path': vault.image_path}
+    return JsonResponse(data={'vault': jsonVault}, status=200)
+
+@require_POST
+def update_vault_by_id(request, vault_id):
+    data = json.loads(request.body)
+    name = data.get('name')
+    image_path = data.get('image_path')
+    vault = Vault.objects.get(id=vault_id)
+    vault.name = name
+    vault.image_path = image_path
+    vault.save()
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)

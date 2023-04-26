@@ -1,8 +1,14 @@
 <script setup>
+import * as yup from "yup";
+import { Form, Field } from "vee-validate";
 import vaultTableRow from "./vault-table-row.vue";
 import createPairModal from "./create-pair-modal.vue";
 import inviteUser from "./invite-user.vue";
 import { useVaultsStore } from "../stores/vaults.store";
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+});
 </script>
 <script>
 export default {
@@ -14,21 +20,35 @@ export default {
     password: String,
   },
   methods: {
-    async loadDatas() {
+    async loadPairs() {
       this.dataReady = false;
       const vaultStore = useVaultsStore();
-      this.pairs = await vaultStore.getPairs(this.vaultId);
-      this.vault = await vaultStore.getVault(this.vaultId);
+      this.pairs = (await vaultStore.getPairs(this.vaultId)).pairs;
       this.dataReady = true;
       return this.pairs;
+    },
+    async loadVault() {
+      this.dataReady = false;
+      const vaultStore = useVaultsStore();
+      this.vault = (await vaultStore.getVault(this.vaultId)).vault;
+      console.log("vault", this.vault);
+      this.dataReady = true;
+      return this.pairs;
+    },
+    toggleEditingTitle() {
+      this.editingTitle = !this.editingTitle;
+    },
+    async onSaveTitle(values) {
+      const vaultStore = useVaultsStore();
+      this.vault.name = values.name;
+      await vaultStore.updateVault(this.vault);
+      this.toggleEditingTitle();
     },
   },
   created() {
     this.$watch(
       () => this.$route.params,
-      async () => {
-        await this.loadDatas();
-      },
+      async () => Promise.allSettled([this.loadPairs(), this.loadVault()]),
       // fetch the data when the view is created and the data is
       // already being observed
       { immediate: true }
@@ -47,10 +67,39 @@ export default {
 <template>
   <div class="container">
     <h1>
-      <a href="#" class="vault-edit-heading-link">
-        {{ vaultName }}
-        <i class="fa-solid fa-pen-to-square"></i>
-      </a>
+      <span v-if="!editingTitle" class="vault-edit-heading-link">
+        {{ vault.name }}
+        <i class="fa-solid fa-pen-to-square" @click="toggleEditingTitle"></i>
+      </span>
+      <Form
+        @submit="onSaveTitle"
+        :validation-schema="schema"
+        v-slot="{ errors, isSubmitting }"
+        class="edit-title-form"
+        v-else
+      >
+        <Field
+          type="text"
+          name="name"
+          id="name"
+          class="input text-input"
+          :class="{ 'is-invalid': errors.name }"
+          placeholder="Name"
+        />
+        <button type="submit" class="btn btn-submit" :disabled="isSubmitting">
+          <i v-show="isSubmitting" class="fa-duotone fa-spinner-third"></i>
+          Save
+        </button>
+        <button
+          type="button"
+          class="btn"
+          :disabled="isSubmitting"
+          @click="toggleEditingTitle"
+        >
+          <i v-show="isSubmitting" class="fa-duotone fa-spinner-third"></i>
+          Cancel
+        </button>
+      </Form>
     </h1>
     <table class="vault-table">
       <thead class="vault-table-heading">
@@ -65,7 +114,7 @@ export default {
       </thead>
       <tbody class="vault-table-body" v-if="dataReady">
         <vaultTableRow
-          v-for="pair in pairs.pairs"
+          v-for="pair in pairs"
           :key="pair.id"
           :thing="pair.application"
           :username="pair.username"
@@ -140,6 +189,12 @@ export default {
   text-decoration: none;
   font-size: 1.1rem;
   transition: all 0.5s ease-in-out;
+}
+
+.edit-title-form {
+  display: flex;
+  gap: 1rem;
+  width: fit-content;
 }
 
 @media (min-width: 1024px) {
