@@ -20,7 +20,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-class VaultViewSet(viewsets.ReadOnlyModelViewSet):
+class VaultViewSet(viewsets.ViewSet):
     queryset = Vault.objects.all()
     serializer_class = VaultSerializer
 
@@ -171,7 +171,7 @@ def get_users_for_vault(request, vault_id):
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
 
-def vault_by_id(request, vault_id):
+def route_vaults(request, vault_id):
     if request.method == 'GET':
         return get_vault_by_id(request, vault_id)
     elif request.method == 'POST':

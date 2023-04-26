@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('accounts', views.AccountViewSet, basename='account')
 router.register('users', views.UserViewSet, basename='user')
-router.register('vaults', views.VaultViewSet, basename='vault')
+#router.register('vaults', views.VaultViewSet, basename='vault')
 router.register('invitations', views.InvitationViewSet, basename='invitation')
 
 
@@ -16,7 +16,7 @@ urlpatterns = [
          views.get_vaults_for_user, name='vaults-for-user'),
     path('vaults/', views.create_vault, name='create-vault'),
     path('vaults/<int:vault_id>/pairs/', views.route_pairs, name='pairs-by-vault-id'),
-    path('vaults/<int:vault_id>/', views.vault_by_id, name='vault-by-id'),
+    path('vaults/<int:vault_id>/', views.route_vaults, name='vault-by-id'),
     #path('images/', views.save_image, name='save-image'),
     path('users/<int:user_id>/invitations/',
          views.get_invitations_for_user, name='invitations-for-user'),
