@@ -46,8 +46,8 @@ a {
   display: flex;
   flex-direction: column;
   border-radius: var(--border-radius);
-  width: clamp(100px, 30vw, 150px);
-  height: clamp(100px, 30vw, 150px);
+  width: 150px;
+  height: 150px;
   background-color: var(--lastpass-light-grey);
   transition: var(--hover-transition);
 }
@@ -82,6 +82,7 @@ a {
   height: calc(100% - var(--img-height));
   justify-content: center;
   align-items: center;
+  word-wrap: break-word;
 }
 
 .vault-name {
