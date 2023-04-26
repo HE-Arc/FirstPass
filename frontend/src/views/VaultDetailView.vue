@@ -13,14 +13,10 @@ export default {
   methods: {
     async getVault() {
       const vaultStore = useVaultsStore();
-      this.vaultObj = await vaultStore.getVault(this.getId());
+      this.vaultObj = await vaultStore.getVault(this.vaultId);
       document.title = `FirstPass - Vault ${this.vaultObj.vault.name}`;
       this.dataReady = true;
       return this.vaultObj;
-    },
-    getId() {
-      const route = useRoute();
-      return Number(route.params.id);
     },
   },
   created() {
@@ -34,10 +30,16 @@ export default {
       { immediate: true }
     );
   },
+  computed: {
+    vaultId() {
+      const route = useRoute();
+      return Number(route.params.id);
+    },
+  },
   data() {
     return {
       vaultObj: [],
-      vaultId: this.getId(),
+
       dataReady: false,
     };
   },
