@@ -14,12 +14,12 @@ export default {
     password: String,
   },
   methods: {
-    async getPairs() {
+    async loadDatas() {
       this.dataReady = false;
       const vaultStore = useVaultsStore();
       this.pairs = await vaultStore.getPairs(this.vaultId);
+      this.vault = await vaultStore.getVault(this.vaultId);
       this.dataReady = true;
-      console.log(this.pairs);
       return this.pairs;
     },
   },
@@ -27,7 +27,7 @@ export default {
     this.$watch(
       () => this.$route.params,
       async () => {
-        await this.getPairs();
+        await this.loadDatas();
       },
       // fetch the data when the view is created and the data is
       // already being observed
@@ -38,6 +38,8 @@ export default {
     return {
       pairs: [],
       dataReady: false,
+      vault: {},
+      editingTitle: false,
     };
   },
 };

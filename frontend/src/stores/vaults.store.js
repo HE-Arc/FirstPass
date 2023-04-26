@@ -48,7 +48,7 @@ export const useVaultsStore = defineStore({
       try {
         await fetchWrapper.put(`${baseUrl}/${vault.id}/`, vault);
         const index = this.vaults.findIndex((v) => v.id === vault.id);
-        this.vaults.splice(index, 1, vault);
+        this.vaults[index] = vault;
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
