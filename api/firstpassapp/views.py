@@ -175,16 +175,6 @@ def get_users_for_vault(request, vault_id):
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
 
-def route_vaults(request, vault_id):
-    if request.method == 'GET':
-        return get_vault_by_id(request, vault_id)
-    elif request.method == 'POST':
-        return update_vault_by_id(request, vault_id)
-    else:
-        return JsonResponse({
-            'errors': ['Method not allowed ' + request.method]
-        }, status=405)
-
 def route_invitations(request):
     if request.method == 'GET':
         return get_invitations(request)
@@ -219,6 +209,17 @@ def send_invitation(request):
     jsonInvitation = {'id': invitation.id, 'account': invitation.account.id,
                       'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
+
+
+def route_vaults(request, vault_id):
+    if request.method == 'GET':
+        return get_vault_by_id(request, vault_id)
+    elif request.method == 'POST':
+        return update_vault_by_id(request, vault_id)
+    else:
+        return JsonResponse({
+            'errors': ['Method not allowed ' + request.method]
+        }, status=405)
 
 
 @require_GET
