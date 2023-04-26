@@ -1,6 +1,7 @@
 <script setup>
 import vaultTableRow from "./vault-table-row.vue";
 import createPairModal from "./create-pair-modal.vue";
+import inviteUser from "./invite-user.vue";
 import { useVaultsStore } from "../stores/vaults.store";
 </script>
 <script>
@@ -72,6 +73,7 @@ export default {
       <div class="loader" v-else></div>
     </table>
     <div class="add-btn-container">
+      <inviteUser :vaultId="vaultId" />
       <createPairModal :vaultId="vaultId" @closed="getPairs" />
     </div>
   </div>
@@ -120,8 +122,9 @@ export default {
 .add-btn-container {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   margin: 1rem;
+  flex-direction: column;
 }
 
 .btn-add {
@@ -172,6 +175,12 @@ export default {
   }
   .btn-add:hover {
     background-color: var(--lastpass-red-dark);
+  }
+
+  .add-btn-container {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 }
 </style>
