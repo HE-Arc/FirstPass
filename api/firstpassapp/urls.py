@@ -5,7 +5,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('accounts', views.AccountViewSet, basename='account')
 router.register('users', views.UserViewSet, basename='user')
-#router.register('vaults', views.VaultViewSet, basename='vault')
+router.register('vaults', views.VaultViewSet, basename='vault')
 router.register('invitations', views.InvitationViewSet, basename='invitation')
 
 
