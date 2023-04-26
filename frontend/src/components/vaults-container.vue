@@ -14,7 +14,6 @@ export default {
       const vaultStore = useVaultsStore();
       this.vaults = await vaultStore.getUserVaults();
       this.dataReady = true;
-      console.log(this.vaults);
       return this.vaults;
     },
   },

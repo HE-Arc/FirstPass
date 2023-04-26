@@ -18,9 +18,20 @@ export default {
       return this.vaults;
     },
   },
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      async () => {
+        await this.getVaults();
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    );
+  },
   data() {
     return {
-      vaults: this.getVaults(),
+      vaults: [],
       dataReady: this.dataReady,
     };
   },
