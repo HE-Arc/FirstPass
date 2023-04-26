@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { fetchWrapper } from "../helpers/fetch-wrapper";
+import { router } from "../router";
 import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/vaults`;
@@ -13,7 +14,7 @@ export const useVaultsStore = defineStore({
   actions: {
     async getVaults() {
       try {
-        this.vaults = await fetchWrapper.get(`${baseUrl}/`);
+        this.vaults = await fetchWrapper.get(baseUrl);
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
@@ -21,7 +22,7 @@ export const useVaultsStore = defineStore({
     },
     async getVault(id) {
       try {
-        this.vault = await fetchWrapper.get(`${baseUrl}/${id}/`);
+        this.vault = await fetchWrapper.get(`${baseUrl}/${id}`);
         return this.vault;
       } catch (error) {
         const alertStore = useAlertStore();
@@ -33,12 +34,15 @@ export const useVaultsStore = defineStore({
         let user = JSON.parse(localStorage.getItem("user"));
         let userID = user.user.id;
 
-        await fetchWrapper.post(`${baseUrl}/`, {
+        await fetchWrapper.post(`${baseUrl}/new/`, {
           name,
           path,
           userID,
         });
         this.vaults = await this.getUserVaults();
+        router.push({
+          name: "vaults",
+        });
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
@@ -46,7 +50,7 @@ export const useVaultsStore = defineStore({
     },
     async updateVault(vault) {
       try {
-        await fetchWrapper.put(`${baseUrl}/${vault.id}/`, vault);
+        await fetchWrapper.post(`${baseUrl}/${vault.id}/`, vault);
         const index = this.vaults.findIndex((v) => v.id === vault.id);
         this.vaults.splice(index, 1, vault);
       } catch (error) {
@@ -56,7 +60,7 @@ export const useVaultsStore = defineStore({
     },
     async deleteVault(id) {
       try {
-        await fetchWrapper.delete(`${baseUrl}/${id}/`);
+        await fetchWrapper.delete(`${baseUrl}/${id}`);
         this.vaults = this.vaults.filter((v) => v.id !== id);
       } catch (error) {
         const alertStore = useAlertStore();
@@ -68,7 +72,7 @@ export const useVaultsStore = defineStore({
       let userID = user.user.id;
       try {
         let vaults = await fetchWrapper.get(
-          `${import.meta.env.VITE_API_URL}/users/${userID}/vaults/`
+          `${import.meta.env.VITE_API_URL}/users/${userID}/vaults`
         );
         this.vaults = vaults.vaults;
         return this.vaults;
@@ -84,7 +88,7 @@ export const useVaultsStore = defineStore({
       // console.log(username);
       // console.log(password);
       try {
-        await fetchWrapper.post(`${baseUrl}/${vaultID}/addPair/`, {
+        await fetchWrapper.post(`${baseUrl}/${vaultID}/pairs`, {
           application,
           username,
           password,
@@ -97,7 +101,7 @@ export const useVaultsStore = defineStore({
     },
     async getPairs(vaultID) {
       try {
-        let pairs = await fetchWrapper.get(`${baseUrl}/${vaultID}/pairs/`);
+        let pairs = await fetchWrapper.get(`${baseUrl}/${vaultID}/pairs`);
         return pairs;
       } catch (error) {
         const alertStore = useAlertStore();

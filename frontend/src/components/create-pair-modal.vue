@@ -77,10 +77,7 @@ export default {
           name="password"
         />
       </div>
-      <div class="btn-container">
-        <button type="submit" class="btn btn-submit">Create</button>
-        <button class="btn" @click="open = false">Close</button>
-      </div>
+      <button type="submit" class="btn btn-submit">Create</button>
     </Form>
   </Teleport>
 </template>
@@ -105,16 +102,9 @@ export default {
 }
 
 .btn-create-pair {
-  width: fit-content;
+  width: 10rem;
   align-self: flex-end;
   justify-self: flex-end;
-}
-
-.btn-container {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 90%;
 }
 
 @media screen and (min-width: 1024px) {
@@ -122,9 +112,6 @@ export default {
     min-width: 30%;
     width: fit-content;
     left: 35%;
-  }
-  .btn-container {
-    flex-direction: row;
   }
 }
 </style>

@@ -14,7 +14,6 @@ export default {
     async getVault() {
       const vaultStore = useVaultsStore();
       this.vaultObj = await vaultStore.getVault(this.getId());
-      document.title = `FirstPass - Vault ${this.vaultObj.vault.name}`;
       this.dataReady = true;
       return this.vaultObj;
     },
