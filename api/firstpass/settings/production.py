@@ -1,6 +1,6 @@
 from .defaults import *
 import os
-DEBUG = False
+DEBUG = True
 
 CORS_ALLOWED_ORIGINS = [
     "https://first-pass.k8s.ing.he-arc.ch",
