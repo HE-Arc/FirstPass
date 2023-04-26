@@ -4,6 +4,10 @@ DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
     "https://first-pass.k8s.ing.he-arc.ch",
+    "http://127.0.0.1:5173",
+    "https://127.0.0.1:5173",
+    "http://localhost:5173",
+    "https://localhost:5173",
 ]
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS

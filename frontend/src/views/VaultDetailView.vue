@@ -38,8 +38,7 @@ export default {
   },
   data() {
     return {
-      vaultObj: [],
-
+      vaultObj: {},
       dataReady: false,
     };
   },
