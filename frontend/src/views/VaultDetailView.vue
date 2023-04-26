@@ -55,7 +55,7 @@ export default {
       <div class="loader"></div>
     </div>
     <div class="main" v-if="dataReady">
-      <vault :vaultName="this.vaultObj.vault.name" :vaultId="this.vaultId" />
+      <vault :vaultName="vaultObj.vault.name" :vaultId="vaultId" />
     </div>
   </body>
 </template>
