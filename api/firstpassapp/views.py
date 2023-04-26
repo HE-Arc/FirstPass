@@ -35,6 +35,10 @@ def route_user(request, user_id):
         return get_user_by_id(request, user_id)
     elif request.method == 'POST':
         return update_user(request, user_id)
+    else:
+        return JsonResponse({
+            'errors': ['Method not allowed ' + request.method]
+        }, status=405)
 
 
 @require_POST
@@ -177,14 +181,19 @@ def route_vaults(request, vault_id):
     elif request.method == 'POST':
         return update_vault_by_id(request, vault_id)
     else:
-        return JsonResponse(data={'error': 'Invalid request'}, status=400)
+        return JsonResponse({
+            'errors': ['Method not allowed ' + request.method]
+        }, status=405)
 
 def route_invitations(request):
     if request.method == 'GET':
         return get_invitations(request)
     elif request.method == 'POST':
         return send_invitation(request)
-    return JsonResponse(data={'error': 'Invalid request'}, status=400)
+    else:
+        return JsonResponse({
+            'errors': ['Method not allowed ' + request.method]
+        }, status=405)
 
 
 @require_GET
