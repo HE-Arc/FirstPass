@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.core.files.storage import Storage
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
 from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer
 from .models import Account, AccountVaultAccess, Pair, Vault, Invitation
 from .models import create_user_account, save_user_account
@@ -29,7 +30,7 @@ class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Invitation.objects.all()
     serializer_class = InvitationSerializer
 
-
+@api_view(['GET', 'POST'])
 def route_user(request, user_id):
     if request.method == 'GET':
         return get_user_by_id(request, user_id)
@@ -175,6 +176,7 @@ def get_users_for_vault(request, vault_id):
     return JsonResponse(data={'users': jsonUsers}, status=200)
 
 
+@api_view(['GET', 'POST'])
 def route_invitations(request):
     if request.method == 'GET':
         return get_invitations(request)
@@ -211,6 +213,7 @@ def send_invitation(request):
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
 
 
+@api_view(['GET', 'POST'])
 def route_vaults(request, vault_id):
     if request.method == 'GET':
         return get_vault_by_id(request, vault_id)
@@ -243,6 +246,7 @@ def update_vault_by_id(request, vault_id):
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
 
+@api_view(['GET', 'POST'])
 def route_pairs(request, vault_id):
     if request.method == 'GET':
         return get_pairs(request, vault_id)
