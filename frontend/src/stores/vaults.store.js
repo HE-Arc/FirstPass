@@ -50,7 +50,7 @@ export const useVaultsStore = defineStore({
     },
     async updateVault(vault) {
       try {
-        await fetchWrapper.put(`${baseUrl}/${vault.id}`, vault);
+        await fetchWrapper.post(`${baseUrl}/${vault.id}/`, vault);
         const index = this.vaults.findIndex((v) => v.id === vault.id);
         this.vaults.splice(index, 1, vault);
       } catch (error) {
@@ -71,7 +71,9 @@ export const useVaultsStore = defineStore({
       let user = JSON.parse(localStorage.getItem("user"));
       let userID = user.user.id;
       try {
-        let vaults = await fetchWrapper.get(`${import.meta.env.VITE_API_URL}/users/${userID}/vaults`);
+        let vaults = await fetchWrapper.get(
+          `${import.meta.env.VITE_API_URL}/users/${userID}/vaults`
+        );
         this.vaults = vaults.vaults;
         return this.vaults;
       } catch (error) {
