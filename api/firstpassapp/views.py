@@ -176,6 +176,8 @@ def vault_by_id(request, vault_id):
         return get_vault_by_id(request, vault_id)
     elif request.method == 'POST':
         return update_vault_by_id(request, vault_id)
+    else:
+        return JsonResponse(data={'error': 'Invalid request'}, status=400)
 
 def route_invitations(request):
     if request.method == 'GET':
