@@ -30,7 +30,7 @@ def save_user_account(sender, instance, **kwargs):
 
 class Vault(models.Model):
     name = models.CharField(max_length=50)
-    image_path = models.FilePathField()
+    image_path = models.CharField(max_length=255)
 
 
 class Pair(models.Model):
