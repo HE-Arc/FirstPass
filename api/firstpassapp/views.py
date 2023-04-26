@@ -212,6 +212,14 @@ def get_vault_by_id(request, vault_id):
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
 
+def route_pairs(request, vault_id):
+    if request.method == 'GET':
+        return get_pairs(request, vault_id)
+    elif request.method == 'POST':
+        return add_pair(request, vault_id)
+    return JsonResponse(data={'error': 'Invalid request'}, status=400)
+
+
 @require_GET
 def get_pairs(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
