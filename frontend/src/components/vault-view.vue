@@ -125,7 +125,7 @@ export default {
     </table>
     <div class="add-btn-container">
       <inviteUser :vaultId="vaultId" />
-      <createPairModal :vaultId="vaultId" @closed="getPairs" />
+      <createPairModal :vaultId="vaultId" @closed="loadPairs" />
     </div>
   </div>
 </template>
