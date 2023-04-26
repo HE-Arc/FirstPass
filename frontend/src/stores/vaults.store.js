@@ -84,7 +84,7 @@ export const useVaultsStore = defineStore({
       // console.log(username);
       // console.log(password);
       try {
-        await fetchWrapper.post(`${baseUrl}/${vaultID}/addPair/`, {
+        await fetchWrapper.post(`${baseUrl}/${vaultID}/pairs/`, {
           application,
           username,
           password,
