@@ -28,10 +28,9 @@ urlpatterns = [
     path('vaults/<int:vault_id>/users/',
          views.get_users_for_vault, name='users-for-vault'),
     path('users/<int:user_id>/', views.route_user,
-         name='update-user'),
+         name='route-user'),
     path('users/<str:username>/', views.get_user_by_username,
          name='get-user-by-username'),
-    path('users/<int:user_id>/', views.route_user,
-         name='get-user-by-id'),
+
     path('', include(router.urls))
 ]
