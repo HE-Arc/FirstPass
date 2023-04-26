@@ -15,8 +15,7 @@ urlpatterns = [
     path('users/<int:user_id>/vaults/',
          views.get_vaults_for_user, name='vaults-for-user'),
     path('vaults/', views.create_vault, name='create-vault'),
-    path('vaults/<int:vault_id>/pairs/', views.route_pairs, name='get-pairs'), # make it work again
-    path('vaults/<int:vault_id>/pairs/', views.route_pairs, name='add-pair'),
+    path('vaults/<int:vault_id>/pairs/', views.route_pairs, name='pairs-by-vault-id'),
     path('vaults/<int:vault_id>/', views.vault_by_id, name='vault-by-id'),
     #path('images/', views.save_image, name='save-image'),
     path('users/<int:user_id>/invitations/',
