@@ -31,7 +31,7 @@ export default {
       this.dataReady = false;
       const vaultStore = useVaultsStore();
       this.vault = (await vaultStore.getVault(this.vaultId)).vault;
-      console.log("vault", this.vault);
+      this.accessLevel = await vaultStore.getVaultAccessLevel(this.vaultId);
       this.dataReady = true;
       return this.pairs;
     },
@@ -60,6 +60,7 @@ export default {
       dataReady: false,
       vault: {},
       editingTitle: false,
+      accessLevel: null,
     };
   },
 };
@@ -69,7 +70,11 @@ export default {
     <h1>
       <span v-if="!editingTitle" class="vault-edit-heading-link">
         {{ vault.name }}
-        <i class="fa-solid fa-pen-to-square" @click="toggleEditingTitle"></i>
+        <i
+          class="fa-solid fa-pen-to-square"
+          @click="toggleEditingTitle"
+          v-if="accessLevel === 'O'"
+        ></i>
       </span>
       <Form
         @submit="onSaveTitle"
@@ -107,7 +112,10 @@ export default {
           <th class="vault-table-heading-item">Thing</th>
           <th class="vault-table-heading-item">Username</th>
           <th class="vault-table-heading-item">Password</th>
-          <th class="vault-table-heading-item">
+          <th
+            class="vault-table-heading-item"
+            v-if="accessLevel === 'W' || accessLevel === 'O'"
+          >
             <i class="fa-solid fa-pen-to-square"></i>
           </th>
         </tr>
@@ -119,13 +127,18 @@ export default {
           :thing="pair.application"
           :username="pair.username"
           :password="pair.password"
+          :showEditButtons="accessLevel === 'W' || accessLevel === 'O'"
         />
       </tbody>
       <div class="loader" v-else></div>
     </table>
     <div class="add-btn-container">
-      <inviteUser :vaultId="vaultId" />
-      <createPairModal :vaultId="vaultId" @closed="loadPairs" />
+      <inviteUser :vaultId="vaultId" v-if="accessLevel === 'O'" />
+      <createPairModal
+        :vaultId="vaultId"
+        @closed="loadPairs"
+        v-if="accessLevel === 'W' || accessLevel === 'O'"
+      />
     </div>
   </div>
 </template>

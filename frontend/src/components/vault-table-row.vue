@@ -10,6 +10,7 @@ export default {
     thing: String,
     username: String,
     password: String,
+    showEditButtons: Boolean,
   },
 };
 </script>
@@ -28,7 +29,10 @@ export default {
         {{ password }}<i class="fa-solid fa-copy"></i>
       </button>
     </td>
-    <td class="vault-table-body-item vault-table-edit-col">
+    <td
+      class="vault-table-body-item vault-table-edit-col"
+      v-if="showEditButtons"
+    >
       <a href="#" class="vault-edit-link">
         <i class="fa-solid fa-pen-to-square"></i>
       </a>
