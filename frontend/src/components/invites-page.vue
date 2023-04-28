@@ -88,7 +88,7 @@ export default {
       </tbody>
     </table>
     <div v-else>
-      <h1>No invites</h1>
+      <h1>Nobody invited you, poor boy.</h1>
     </div>
   </div>
 </template>
