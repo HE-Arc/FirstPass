@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.core.files.storage import Storage
 from rest_framework import viewsets
-from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer
+from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer, PairSerializer
 from .models import Account, AccountVaultAccess, Pair, Vault, Invitation
 from .models import create_user_account, save_user_account
 
@@ -28,6 +28,10 @@ class VaultViewSet(viewsets.ViewSet):
 class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Invitation.objects.all()
     serializer_class = InvitationSerializer
+    
+class PairViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Pair.objects.all()
+    serializer_class = PairSerializer
 
 def route_user(request, user_id):
     if request.method == 'GET':
@@ -274,6 +278,26 @@ def add_pair(request, vault_id):
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
 
+@require_POST
+def update_pair(request, pair_id):
+    data = json.loads(request.body)
+    application = data.get('application')
+    username = data.get('username')
+    password = data.get('password')
+    pair = Pair.objects.get(id=pair_id)
+    pair.application = application
+    pair.username = username
+    pair.password = password
+    pair.save()
+    jsonPair = {'id': pair.id, 'application': pair.application,
+                'username': pair.username, 'password': pair.password}
+    return JsonResponse(data={'pair': jsonPair}, status=200)
+
+@require_POST
+def delete_pair(request, pair_id):
+    pair = Pair.objects.get(id=pair_id)
+    pair.delete()
+    return JsonResponse(data={'message': 'Pair deleted'}, status=200)
 
 @require_POST
 def update_user(request, user_id):
