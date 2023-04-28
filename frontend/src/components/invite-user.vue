@@ -26,7 +26,9 @@ export default {
       const invitesStore = useInvitesStore();
       const userStore = useUsersStore();
       const { user, accessLevel } = values;
-      const userId = userStore.getByUsername(user).id;
+      console.log(await userStore.getByUsername(user));
+      const userId = (await userStore.getByUsername(user)).user.id;
+      console.log("userid", userId);
       await invitesStore.createInvite(this.vaultId, userId, accessLevel);
       this.$emit("closed");
       this.open = false;

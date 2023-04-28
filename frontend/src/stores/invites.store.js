@@ -23,14 +23,14 @@ export const useInvitesStore = defineStore({
         alertStore.error(error);
       }
     },
-    async createInvite(vaultID, accountId, accessLevel) {
+    async createInvite(vaultId, accountId, accessLevel) {
       try {
         await fetchWrapper.post(`${invitesUrl}/`, {
-          vaultID,
+          vaultId,
           accessLevel,
           accountId,
         });
-        this.invites = await this.getUserInvites();
+        this.invites = await this.getUserInvites(accountId);
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
