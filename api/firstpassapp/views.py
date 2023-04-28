@@ -284,20 +284,37 @@ def update_pair(request, pair_id):
     application = data.get('application')
     username = data.get('username')
     password = data.get('password')
-    pair = Pair.objects.get(id=pair_id)
-    pair.application = application
-    pair.username = username
-    pair.password = password
-    pair.save()
-    jsonPair = {'id': pair.id, 'application': pair.application,
-                'username': pair.username, 'password': pair.password}
-    return JsonResponse(data={'pair': jsonPair}, status=200)
+    vault_id = data.get('vault_id')
+    user_id = data.get('user_id')
+    
+    user = User.objects.get(id=user_id)
+    vault = Vault.objects.get(id=vault_id)
+    if (user in vault.users.all() and (user.access_level == 'owner' or user.access_level == 'write')):
+        pair = Pair.objects.get(id=pair_id)
+        pair.application = application
+        pair.username = username
+        pair.password = password
+        pair.save()
+        jsonPair = {'id': pair.id, 'application': pair.application,
+                    'username': pair.username, 'password': pair.password}
+        return JsonResponse(data={'pair': jsonPair}, status=200)
+    else:
+        return JsonResponse(data={'error': 'Unauthorized'}, status=403)
 
 @require_POST
 def delete_pair(request, pair_id):
-    pair = Pair.objects.get(id=pair_id)
-    pair.delete()
-    return JsonResponse(data={'message': 'Pair deleted'}, status=200)
+    data = json.loads(request.body)
+    vault_id = data.get('vault_id')
+    user_id = data.get('user_id')
+    
+    user = User.objects.get(id=user_id)
+    vault = Vault.objects.get(id=vault_id)
+    if (user in vault.users.all() and (user.access_level == 'owner' or user.access_level == 'write')):
+        pair = Pair.objects.get(id=pair_id)
+        pair.delete()
+        return JsonResponse(data={'message': 'Pair deleted'}, status=200)
+    else:
+        return JsonResponse(data={'error': 'Unauthorized'}, status=403)
 
 @require_POST
 def update_user(request, user_id):
