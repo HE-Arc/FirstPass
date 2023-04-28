@@ -202,8 +202,8 @@ def get_invitations(request):
 @require_POST
 def send_invitation(request):
     data = json.loads(request.body)
-    accountID = data.get('accountID')
-    vaultID = data.get('vaultID')
+    accountID = data.get('accountId')
+    vaultID = data.get('vaultId')
     accessLevel = data.get('accessLevel')
     account = Account.objects.get(id=accountID)
     vault = Vault.objects.get(id=vaultID)
