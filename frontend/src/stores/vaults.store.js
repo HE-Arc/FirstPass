@@ -75,6 +75,7 @@ export const useVaultsStore = defineStore({
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
+        return { vaults: [] };
       }
     },
     async createPair(vaultID, application, username, password) {
@@ -93,6 +94,7 @@ export const useVaultsStore = defineStore({
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
+        return { vault: {} };
       }
     },
     async getPairs(vaultID) {
@@ -102,6 +104,7 @@ export const useVaultsStore = defineStore({
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
+        return { pairs: [] };
       }
     },
   },
