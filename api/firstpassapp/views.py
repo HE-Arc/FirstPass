@@ -361,3 +361,15 @@ def get_user_by_id(request, user_id):
     user = User.objects.get(id=user_id)
     jsonUser = {'id': user.id, 'username': user.username}
     return JsonResponse(data={'user': jsonUser}, status=200)
+
+@require_GET
+def get_vault_permission(request, vault_id):
+    vault = Vault.objects.get(id=vault_id)
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+
+    access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if access_level is None:
+        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+    return JsonResponse(data={'access_level': access_level}, status=200)

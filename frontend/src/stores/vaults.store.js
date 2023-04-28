@@ -107,5 +107,18 @@ export const useVaultsStore = defineStore({
         return { pairs: [] };
       }
     },
+    async getVaultAccessLevel(vaultID) {
+      try {
+        const { access_level } = await fetchWrapper.get(
+          `${baseUrl}/${vaultID}/permission/`
+        );
+        console.log("accessLevel", access_level);
+        return access_level;
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(error);
+        return { accessLevel: "none" };
+      }
+    },
   },
 });
