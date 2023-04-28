@@ -23,7 +23,6 @@ export default {
           vaultName: vault.vault.name,
           username: user.user.username,
         };
-        console.log(this.invites[i]);
       }
       this.dataReady = true;
     },
