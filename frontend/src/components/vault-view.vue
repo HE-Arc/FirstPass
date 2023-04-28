@@ -35,6 +35,11 @@ export default {
       this.dataReady = true;
       return this.pairs;
     },
+    async deleteVault() {
+      const vaultStore = useVaultsStore();
+      await vaultStore.deleteVault(this.vaultId);
+      this.$router.push({ name: "vaults" });
+    },
     toggleEditingTitle() {
       this.editingTitle = !this.editingTitle;
     },
@@ -139,6 +144,13 @@ export default {
         @closed="loadPairs"
         v-if="accessLevel === 'W' || accessLevel === 'O'"
       />
+      <button
+        class="btn btn-create-pair"
+        v-if="accessLevel === 'O'"
+        @click="deleteVault"
+      >
+        Delete vault
+      </button>
     </div>
   </div>
 </template>
@@ -202,6 +214,12 @@ export default {
   text-decoration: none;
   font-size: 1.1rem;
   transition: all 0.5s ease-in-out;
+}
+
+.btn-create-pair {
+  width: fit-content;
+  align-self: flex-end;
+  justify-self: flex-end;
 }
 
 .edit-title-form {
