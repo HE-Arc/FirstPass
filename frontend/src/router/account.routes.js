@@ -4,17 +4,17 @@ export default {
   children: [
     {
       path: "",
-      name: "Account",
+      name: "account",
       component: () => import("@/views/AccountView.vue"),
     },
     {
       path: "login",
-      name: "Login",
+      name: "login",
       component: () => import("@/views/LoginView.vue"),
     },
     {
       path: "register",
-      name: "Register",
+      name: "register",
       component: () => import("@/views/RegisterView.vue"),
     },
   ],
