@@ -58,7 +58,7 @@ export default {
 </script>
 <template>
   <div class="contain">
-    <table class="invite-table" v-if="invites && dataReady">
+    <table class="invite-table" v-if="invites.length > 0 && dataReady">
       <thead class="table-head">
         <tr class="table-row">
           <th>Vault</th>
