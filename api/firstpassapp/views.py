@@ -2,7 +2,7 @@ import json
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST, require_GET, require_http_methods
 from django.core.files.storage import Storage
 from rest_framework import viewsets
 from .serializers import UserSerializer, AccountSerializer, VaultSerializer, InvitationSerializer, PairSerializer
@@ -219,6 +219,8 @@ def route_vaults(request, vault_id):
         return get_vault_by_id(request, vault_id)
     elif request.method == 'POST':
         return update_vault_by_id(request, vault_id)
+    elif request.method == 'DELETE':
+        return delete_vault_by_id(request, vault_id)
     else:
         return JsonResponse({
             'errors': ['Method not allowed ' + request.method]
@@ -245,6 +247,19 @@ def update_vault_by_id(request, vault_id):
                  'image_path': vault.image_path}
     return JsonResponse(data={'vault': jsonVault}, status=200)
 
+@require_http_methods(['DELETE'])
+def delete_vault_by_id(request, vault_id):
+    vault = Vault.objects.get(id=vault_id)
+    user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+    
+    access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if not (user in vault.users.all() or access_level != 'owner' ):
+        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+    
+    vault.delete()
+    return JsonResponse(data={}, status=200)
 
 def route_pairs(request, vault_id):
     if request.method == 'GET':
