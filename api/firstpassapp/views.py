@@ -272,11 +272,12 @@ def add_pair(request, vault_id):
     username = data.get('username')
     password = data.get('password')
     vault = Vault.objects.get(id=vault_id)
-    
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
-    if not (user in vault.users.all() or (user.access_level != 'owner' and user.access_level != 'write')):
+    
+    access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if not (user in vault.users.all() or (access_level != 'owner' and access_level != 'write')):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
     
     pair = Pair.objects.create(
@@ -299,7 +300,8 @@ def update_pair(request, pair_id):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
-    if not (user in vault.users.all() or (user.access_level != 'owner' and user.access_level != 'write')):
+    access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if not (user in vault.users.all() or (access_level != 'owner' and access_level != 'write')):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
     
     pair = Pair.objects.get(id=pair_id)
@@ -323,7 +325,8 @@ def delete_pair(request, pair_id):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
-    if not (user in vault.users.all() or (user.access_level != 'owner' and user.access_level != 'write')):
+    access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if not (user in vault.users.all() or (access_level != 'owner' and access_level != 'write')):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
 
     pair = Pair.objects.get(id=pair_id)
