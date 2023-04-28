@@ -35,3 +35,13 @@ class InvitationSerializer(serializers.HyperlinkedModelSerializer):
             "access_level"
         ]
         
+class PairSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Pair
+        fields = [
+            "account",
+            "vault",
+            "username",
+            "password",
+        ]
+        
