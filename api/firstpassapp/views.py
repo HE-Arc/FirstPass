@@ -315,9 +315,10 @@ def update_pair(request, pair_id):
     application = data.get('application')
     username = data.get('username')
     password = data.get('password')
-    vault_id = data.get('vaultID')
 
-    vault = Vault.objects.get(id=vault_id)
+    pair = Pair.objects.get(id=pair_id)
+
+    vault = pair.vault
 
     user = request.user
     if not user.is_authenticated:
@@ -327,7 +328,6 @@ def update_pair(request, pair_id):
     if not (user in vault.users.all() or (access_level != 'owner' and access_level != 'write')):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
 
-    pair = Pair.objects.get(id=pair_id)
     pair.application = application
     pair.username = username
     pair.password = password

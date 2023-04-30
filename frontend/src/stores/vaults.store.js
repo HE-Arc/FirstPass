@@ -97,16 +97,13 @@ export const useVaultsStore = defineStore({
         return { vault: {} };
       }
     },
-    async updatePair(vaultID, pairId, application, username, password) {
-      console.log("vaultId in updatePair", vaultID);
+    async updatePair(pairId, application, username, password) {
       try {
         await fetchWrapper.post(`${pairsUrl}/${pairId}/`, {
-          vaultID,
           application,
           username,
           password,
         });
-        this.vault = await this.getVault(vaultID);
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);

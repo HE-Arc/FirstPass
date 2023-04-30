@@ -49,9 +49,6 @@ export default {
       await vaultStore.updateVault(this.vault);
       this.toggleEditingTitle();
     },
-    async onUpdatePair(values) {
-      vaultTableRow.methods.updatePair(values);
-    },
   },
   created() {
     this.$watch(
