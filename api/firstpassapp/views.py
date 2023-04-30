@@ -380,8 +380,10 @@ def update_pair(request, pair_id):
     password = data.get('password')
 
     pair = Pair.objects.get(id=pair_id)
-
+    print(pair)
+    
     vault = pair.vault
+    print(vault)
 
     user = request.user
     if not user.is_authenticated:
