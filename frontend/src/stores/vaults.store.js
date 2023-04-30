@@ -3,7 +3,7 @@ import { fetchWrapper } from "../helpers/fetch-wrapper";
 import { useAlertStore } from "./alert.store";
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/vaults`;
-
+const pairsUrl = `${import.meta.env.VITE_API_URL}/pairs`;
 export const useVaultsStore = defineStore({
   id: "vaults",
   state: () => ({
@@ -91,6 +91,19 @@ export const useVaultsStore = defineStore({
           password,
         });
         this.vault = await this.getVault(vaultID);
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(error);
+        return { vault: {} };
+      }
+    },
+    async updatePair(pairId, application, username, password) {
+      try {
+        await fetchWrapper.post(`${pairsUrl}/${pairId}/`, {
+          application,
+          username,
+          password,
+        });
       } catch (error) {
         const alertStore = useAlertStore();
         alertStore.error(error);
