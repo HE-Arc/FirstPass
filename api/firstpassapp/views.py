@@ -290,8 +290,7 @@ def update_vault_by_id(request, vault_id):
     name = data.get('name')
     image_path = data.get('image_path')
     vault = Vault.objects.get(id=vault_id)
-    vault.name = name
-    vault.image_path = image_path
+
     
     user = request.user
     if not user.is_authenticated :
@@ -301,6 +300,8 @@ def update_vault_by_id(request, vault_id):
     if user.account not in vault.users.all() or access_level != 'O':
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
     
+    vault.name = name
+    vault.image_path = image_path
     vault.save()
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
