@@ -26,7 +26,6 @@ export const useUsersStore = defineStore({
           message: "Registration successful",
         });
       } catch (err) {
-        console.log("err", err);
         alertStore.error(err[0]);
       }
     },

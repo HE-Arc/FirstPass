@@ -22,7 +22,6 @@ export default {
   emits: ["closed"],
   methods: {
     async onSubmit(values) {
-      console.log(values);
       const vaultsStore = useVaultsStore();
       const { application, username, password } = values;
       await vaultsStore.createPair(

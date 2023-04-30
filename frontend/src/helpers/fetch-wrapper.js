@@ -39,8 +39,6 @@ async function handleResponse(response) {
       location.reload(true);
     }
 
-    console.log("data", data);
-
     const error = (data && data.errors) || response.status;
     return Promise.reject(error);
   }

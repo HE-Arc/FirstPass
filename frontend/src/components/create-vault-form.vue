@@ -13,10 +13,6 @@ async function onSubmit(values) {
   const vaultsStore = useVaultsStore();
   let path =
     "https://images.unsplash.com/photo-1676310483825-daa08914445e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8";
-  // if (values.image) {
-  //   path = await imagesStore.saveImage(values.imagePath);
-  // }
-  // console.log(path);
   const { name } = values;
   await vaultsStore.createVault(name, path);
   router.push("/vaults");
