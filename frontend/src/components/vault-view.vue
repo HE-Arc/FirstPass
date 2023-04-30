@@ -129,10 +129,13 @@ export default {
         <vaultTableRow
           v-for="pair in pairs"
           :key="pair.id"
+          :vaultId="this.vaultId"
+          :pairId="pair.id"
           :thing="pair.application"
           :username="pair.username"
           :password="pair.password"
           :showEditButtons="accessLevel === 'W' || accessLevel === 'O'"
+          @closed="loadPairs"
         />
       </tbody>
       <div class="loader" v-else></div>

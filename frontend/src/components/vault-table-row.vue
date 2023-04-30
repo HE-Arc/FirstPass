@@ -1,12 +1,20 @@
-<script setup></script>
+<script setup>
+import updatePairModal from "./update-pair-modal.vue";
+</script>
 <script>
 export default {
   methods: {
     copyToClipboard(text) {
       navigator.clipboard.writeText(text);
     },
+    onModalClosed() {
+      this.$emit("closed");
+    },
   },
+  emits: ["closed"],
   props: {
+    vaultId: Number,
+    pairId: Number,
     thing: String,
     username: String,
     password: String,
@@ -33,9 +41,14 @@ export default {
       class="vault-table-body-item vault-table-edit-col"
       v-if="showEditButtons"
     >
-      <a href="#" class="vault-edit-link">
-        <i class="fa-solid fa-pen-to-square"></i>
-      </a>
+      <updatePairModal
+        :vaultId="vaultId"
+        :pairId="pairId"
+        :application="thing"
+        :username="username"
+        :password="password"
+        @closed="onModalClosed"
+      />
     </td>
   </tr>
 </template>
@@ -76,15 +89,6 @@ export default {
   max-width: 25%;
 }
 
-.vault-edit-link {
-  display: flex;
-  color: var(--color-text);
-  text-decoration: none;
-  gap: 3rem;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .vault-table-edit-col {
   /* display: flex;
   justify-content: flex-end; */
@@ -104,11 +108,6 @@ export default {
   .vault-edit-heading-link,
   .vault-edit-link {
     transition: all 0.5s ease-in-out;
-  }
-
-  .vault-edit-link:hover,
-  .vault-edit-link:focus {
-    color: var(--lastpass-red);
   }
 }
 </style>
