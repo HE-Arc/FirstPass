@@ -129,7 +129,7 @@ export default {
         <vaultTableRow
           v-for="pair in pairs"
           :key="pair.id"
-          :vaultId="this.vaultId"
+          :vaultId="vaultId"
           :pairId="pair.id"
           :thing="pair.application"
           :username="pair.username"
