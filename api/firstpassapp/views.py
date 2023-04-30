@@ -1,4 +1,5 @@
 import json
+import logging
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -380,10 +381,10 @@ def update_pair(request, pair_id):
     password = data.get('password')
 
     pair = Pair.objects.get(id=pair_id)
-    print(pair)
-    
+    logging.debug(pair)
+
     vault = pair.vault
-    print(vault)
+    logging.debug(vault)
 
     user = request.user
     if not user.is_authenticated:
