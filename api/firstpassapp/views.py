@@ -235,21 +235,22 @@ def get_invitations(request):
 @require_POST
 def send_invitation(request):
     data = json.loads(request.body)
-    accountID = data.get('accountId')
-    vaultID = data.get('vaultId')
-    accessLevel = data.get('accessLevel')
-    account = Account.objects.get(id=accountID)
-    vault = Vault.objects.get(id=vaultID)
+    account_id = data.get('accountId')
+    vault_id = data.get('vaultId')
+    access_level = data.get('accessLevel')
+    account = Account.objects.get(id=account_id)
+    vault = Vault.objects.get(id=vault_id)
     
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)    
     
-    if accessLevel != 'O':
+    access_level_invitor = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
+    if access_level_invitor != 'O':
         return JsonResponse(data={'erreor': 'User not authorized'}, status=403)
     
     invitation = Invitation.objects.create(
-        account=account, vault=vault, access_level=accessLevel)
+        account=account, vault=vault, access_level=access_level)
     jsonInvitation = {'id': invitation.id, 'account': invitation.account.id,
                       'vault': invitation.vault.id, 'access_level': invitation.access_level}
     return JsonResponse(data={'invitation': jsonInvitation}, status=200)
@@ -355,7 +356,7 @@ def add_pair(request, vault_id):
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
     
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
-    if not (user in vault.users.all() or (access_level != 'O' and access_level != 'W')):
+    if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
     
     pair = Pair.objects.create(
@@ -378,8 +379,9 @@ def update_pair(request, pair_id):
     user = request.user
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+    
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
-    if not (user in vault.users.all() or (access_level != 'O' and access_level != 'W')):
+    if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
     
     pair = Pair.objects.get(id=pair_id)
@@ -404,7 +406,7 @@ def delete_pair(request, pair_id):
     if not user.is_authenticated:
         return JsonResponse(data={'error': 'User not authenticated'}, status=401)
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
-    if not (user in vault.users.all() or (access_level != 'O' and access_level != 'W')):
+    if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
 
     pair = Pair.objects.get(id=pair_id)
