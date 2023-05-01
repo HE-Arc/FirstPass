@@ -55,6 +55,7 @@ export default {
           type="text"
           placeholder="Thing"
           id="application"
+          class="input text-input"
           name="application"
         />
       </div>
@@ -64,6 +65,7 @@ export default {
           type="text"
           placeholder="Username"
           id="username"
+          class="input text-input"
           name="username"
         />
       </div>
@@ -73,6 +75,7 @@ export default {
           type="text"
           placeholder="Password"
           id="password"
+          class="input text-input"
           name="password"
         />
       </div>

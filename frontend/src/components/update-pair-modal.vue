@@ -60,6 +60,7 @@ export default {
           type="text"
           placeholder="Thing"
           id="application"
+          class="input text-input"
           name="application"
           :value="application"
         />
@@ -70,6 +71,7 @@ export default {
           type="text"
           placeholder="Username"
           id="username"
+          class="input text-input"
           name="username"
           :value="username"
         />
@@ -80,6 +82,7 @@ export default {
           type="text"
           placeholder="Password"
           id="password"
+          class="input text-input"
           name="password"
           :value="password"
         />
