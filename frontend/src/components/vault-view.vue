@@ -86,6 +86,7 @@ export default {
         :validation-schema="schema"
         v-slot="{ errors, isSubmitting }"
         class="edit-title-form"
+        :value="vault.title || ''"
         v-else
       >
         <Field
