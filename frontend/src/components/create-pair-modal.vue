@@ -45,6 +45,7 @@ export default {
     <Form
       v-if="open"
       class="modal"
+      autocomplete="off"
       :validation-schema="schema"
       @submit="onSubmit"
     >

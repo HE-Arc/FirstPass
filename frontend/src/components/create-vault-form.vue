@@ -25,6 +25,7 @@ async function onSubmit(values) {
       :validation-schema="schema"
       v-slot="{ errors, isSubmitting }"
       class="login-form"
+      autocomplete="off"
     >
       <h1 class="login-heading">Create Vault</h1>
       <label for="name" class="label">Vault Name</label>
