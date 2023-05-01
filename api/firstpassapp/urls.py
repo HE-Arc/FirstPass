@@ -31,6 +31,7 @@ urlpatterns = [
          views.get_users_for_vault, name='users-for-vault'),
     path('users/<int:user_id>/', views.route_user,
          name='route-user'),
+     path('users/<int:user_id>/password/', views.update_password, name='update-password'),
     path('pairs/<int:pair_id>/', views.route_pairs, name='pair-by-id'),
     path('users/<str:username>/', views.get_user_by_username,
          name='get-user-by-username'),
