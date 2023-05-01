@@ -53,7 +53,7 @@ export default {
   created() {
     this.$watch(
       () => this.$route.params,
-      async () => Promise.allSettled([this.loadPairs(), this.loadVault()]),
+      () => Promise.allSettled([this.loadPairs(), this.loadVault()]),
       // fetch the data when the view is created and the data is
       // already being observed
       { immediate: true }
@@ -74,7 +74,7 @@ export default {
   <div class="container">
     <h1>
       <span v-if="!editingTitle" class="vault-edit-heading-link">
-        {{ vault.name }}
+        <span>{{ vault.name }}</span>
         <i
           class="fa-solid fa-pen-to-square"
           @click="toggleEditingTitle"
@@ -86,7 +86,6 @@ export default {
         :validation-schema="schema"
         v-slot="{ errors, isSubmitting }"
         class="edit-title-form"
-        :value="vault.name || ''"
         v-else
       >
         <Field
@@ -96,6 +95,7 @@ export default {
           class="input text-input"
           :class="{ 'is-invalid': errors.name }"
           placeholder="Name"
+          :value="vault.name"
         />
         <button type="submit" class="btn btn-submit" :disabled="isSubmitting">
           <i v-show="isSubmitting" class="fa-duotone fa-spinner-third"></i>
