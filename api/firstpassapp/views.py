@@ -42,7 +42,7 @@ def route_user(request, user_id):
         return update_user(request, user_id)
     else:
         return JsonResponse({
-            'errors': ['Method not allowed ' + request.method]
+            'errors': 'Method not allowed ' + request.method
         }, status=405)
 
 
@@ -54,7 +54,7 @@ def login_view(request):
 
     if username is None or password is None:
         return JsonResponse({
-            'errors': ['Invalid credentials']
+            'errors': 'Invalid credentials'
         }, status=400)
 
     user = authenticate(username=username, password=password)
@@ -64,7 +64,7 @@ def login_view(request):
         return JsonResponse(data={'user': jsonUser}, status=200)
 
     return JsonResponse({
-        'errors': ['Invalid credentials']
+        'errors': 'Invalid credentials'
     }, status=400)
 
 
@@ -77,12 +77,12 @@ def register_view(request):
 
     if username is None or password is None or password != password_verify:
         return JsonResponse({
-            'errors': ['Invalid credentials']
+            'errors': 'Invalid credentials'
         }, status=400)
 
     if User.objects.filter(username=username).exists():
         return JsonResponse({
-            'errors': ['User already exists']
+            'errors': 'User already exists'
         }, status=400)
 
     user = User.objects.create_user(username=username, password=password)
@@ -99,7 +99,7 @@ def create_vault(request):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     vault = Vault.objects.create(name=name, image_path=path)
     account = Account.objects.get(user=user)
@@ -130,7 +130,7 @@ def get_vaults_for_user(request, user_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     for account_vault in account_vaults:
         vaults.append(account_vault.vault)
@@ -150,7 +150,7 @@ def get_invitations_for_user(request, user_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     for invitation in invitations:
         jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id,
@@ -167,9 +167,9 @@ def accept_invitation(request, invitation_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     if user.id != account.user.id:
-        return JsonResponse(data={'error': 'User not authorized'}, status=403)
+        return JsonResponse(data={'errors': 'User not authorized'}, status=403)
     
     AccountVaultAccess.objects.create(
         account=account, vault=vault, access_level=access_level)
@@ -183,10 +183,10 @@ def decline_invitation(request, invitation_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     if user.id != invitation.account.user.id:
-        return JsonResponse(data={'error': 'User not authorized'}, status=403)
+        return JsonResponse(data={'errors': 'User not authorized'}, status=403)
     
     invitation.delete()
     return JsonResponse(data={'invitation': invitation.id}, status=200)
@@ -215,7 +215,7 @@ def route_invitations(request):
         return send_invitation(request)
     else:
         return JsonResponse({
-            'errors': ['Method not allowed ' + request.method]
+            'errors': 'Method not allowed ' + request.method
         }, status=405)
 
 
@@ -226,7 +226,7 @@ def get_invitations(request):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     for invitation in invitations:
         jsonInvitations.append({'id': invitation.id, 'account': invitation.account.id,
@@ -245,7 +245,7 @@ def send_invitation(request):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)    
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)    
     
     access_level_invitor = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if access_level_invitor != 'O':
@@ -267,7 +267,7 @@ def route_vaults(request, vault_id):
         return delete_vault_by_id(request, vault_id)
     else:
         return JsonResponse({
-            'errors': ['Method not allowed ' + request.method]
+            'errors': 'Method not allowed ' + request.method
         }, status=405)
 
 
@@ -277,7 +277,7 @@ def get_vault_by_id(request, vault_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     jsonVault = {'id': vault.id, 'name': vault.name,
                  'image_path': vault.image_path}
@@ -294,11 +294,11 @@ def update_vault_by_id(request, vault_id):
     
     user = request.user
     if not user.is_authenticated :
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
 
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or access_level != 'O':
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
     
     vault.name = name
     vault.image_path = image_path
@@ -313,11 +313,11 @@ def delete_vault_by_id(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
 
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or access_level != 'O' :
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
 
     vault.delete()
     return JsonResponse(data={}, status=200)
@@ -329,7 +329,7 @@ def route_vault_pairs(request, vault_id):
     elif request.method == 'POST':
         return add_pair(request, vault_id)
     return JsonResponse({
-        'errors': ['Method not allowed ' + request.method]
+        'errors': 'Method not allowed ' + request.method
     }, status=405)
 
 
@@ -341,10 +341,10 @@ def get_pairs(request, vault_id):
     
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     if user.account not in vault.users.all():
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
     
     for pair in pairs:
         jsonPairs.append({'id': pair.id, 'application': pair.application,
@@ -361,11 +361,11 @@ def add_pair(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
     
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
 
     pair = Pair.objects.create(
         application=application, username=username, password=password, vault=vault)
@@ -380,7 +380,7 @@ def route_pairs(request, pair_id):
         return delete_pair(request, pair_id)
     else:
         return JsonResponse({
-            'errors': ['Method not allowed ' + request.method]
+            'errors': 'Method not allowed ' + request.method
         }, status=405)
 
 
@@ -396,11 +396,11 @@ def update_pair(request, pair_id):
 
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
 
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
 
     pair.application = application
     pair.username = username
@@ -417,11 +417,11 @@ def delete_pair(request, pair_id):
 
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
 
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
     
     pair.delete()
     return JsonResponse(data={}, status=200)
@@ -430,23 +430,45 @@ def delete_pair(request, pair_id):
 def update_user(request, user_id):
     data = json.loads(request.body)
     username = data.get('username')
+    user = User.objects.get(id=user_id)
+    
+    requesting_user = request.user
+    if not user.is_authenticated:
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
+    
+    if requesting_user != user:
+        return JsonResponse(data={'errors': 'User not authorized'}, status=403)
+    
+    if User.objects.filter(username=username).exists():
+        return JsonResponse(data={'errors': 'Username already used'}, status=400)
+
+    user.username = username
+    user.save()
+    return JsonResponse(data={'user': {'id': user.id, 'username': user.username}}, status=200)
+
+@require_POST
+def update_password(request, user_id):
+    data = json.loads(request.body)
     old_password = data.get('old_password')
     new_password = data.get('new_password')
     confirm_password = data.get('confirm_password')
     user = User.objects.get(id=user_id)
     
-    user = request.user
+    requesting_user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
+    
+    if requesting_user != user:
+        return JsonResponse(data={'errors': 'User not authorized'}, status=403)
+
     if user.check_password(old_password):
         if new_password == confirm_password:
-            user.username = username
             user.set_password(new_password)
             user.save()
             jsonUser = {'id': user.id, 'username': user.username}
             return JsonResponse(data={'user': jsonUser}, status=200)
-        return JsonResponse(data={'error': "Passwords do not match"}, status=400)
-    return JsonResponse(data={'error': "Invalid password"}, status=400)
+        return JsonResponse(data={'errors': "Passwords do not match"}, status=400)
+    return JsonResponse(data={'errors': "Invalid password"}, status=400)
 
 
 @require_GET
@@ -468,10 +490,10 @@ def get_vault_permission(request, vault_id):
     vault = Vault.objects.get(id=vault_id)
     user = request.user
     if not user.is_authenticated:
-        return JsonResponse(data={'error': 'User not authenticated'}, status=401)
+        return JsonResponse(data={'errors': 'User not authenticated'}, status=401)
 
     access_level = AccountVaultAccess.objects.get(
         account=user.account, vault=vault).access_level
     if access_level is None:
-        return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
+        return JsonResponse(data={'errors': 'User does not have access to this vault'}, status=403)
     return JsonResponse(data={'access_level': access_level}, status=200)

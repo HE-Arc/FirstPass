@@ -9,7 +9,7 @@ const baseUrl = `${import.meta.env.VITE_API_URL}/auth`;
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
-    user: JSON.parse(localStorage.getItem("user")),
+    user: JSON.parse(localStorage.getItem("user"))?.user || null,
     returnUrl: null,
   }),
   actions: {
@@ -27,7 +27,7 @@ export const useAuthStore = defineStore({
         alertStore.success("Login successful");
         myRouter.push({ name: "vaults" });
       } catch (err) {
-        alertStore.error(err[0]);
+        alertStore.error(err);
       }
     },
     logout() {
@@ -35,6 +35,9 @@ export const useAuthStore = defineStore({
       deleteCookie("csrftoken");
       this.user = null;
       myRouter.push("/login");
+    },
+    loadUserFromLocalStorage() {
+      this.user = JSON.parse(localStorage.getItem("user")).user;
     },
   },
 });

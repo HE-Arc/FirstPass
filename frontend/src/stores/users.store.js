@@ -26,7 +26,7 @@ export const useUsersStore = defineStore({
           message: "Registration successful",
         });
       } catch (err) {
-        alertStore.error(err[0]);
+        alertStore.error(err);
       }
     },
     async getById(id) {
@@ -49,24 +49,26 @@ export const useUsersStore = defineStore({
         alertStore.error(err);
       }
     },
-    async update(params) {
+    async updatePassword(userId, params) {
       const alertStore = useAlertStore();
+      const authStore = useAuthStore();
       try {
-        const user = await this.getByUsername(params.username);
-        let id = user.user.id;
-        await fetchWrapper.post(`${userURL}/${id}/`, params);
-        const authStore = useAuthStore();
-        if (id === authStore.user.id) {
-          const user = { ...authStore.user, ...params };
-          authStore.user = user;
-          localStorage.setItem("user", JSON.stringify(user));
-          alertStore.addAlert({
-            type: "success",
-            message: "User updated successfully",
-          });
-        }
+        await fetchWrapper.post(`${userURL}/${userId}/password/`, params);
+        alertStore.success("Password updated successfully");
+        authStore.logout();
       } catch (err) {
         const alertStore = useAlertStore();
+        alertStore.error(err);
+      }
+    },
+    async update(userId, params) {
+      const alertStore = useAlertStore();
+      try {
+        await fetchWrapper.post(`${userURL}/${userId}/`, params);
+        alertStore.success("User updated successfully");
+      } catch (err) {
+        const alertStore = useAlertStore();
+        console.log(err.message);
         alertStore.error(err);
       }
     },
