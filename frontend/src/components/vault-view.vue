@@ -142,12 +142,12 @@ export default {
       <div class="loader" v-else></div>
     </table>
     <div class="add-btn-container">
-      <inviteUser :vaultId="vaultId" v-if="accessLevel === 'O'" />
       <createPairModal
         :vaultId="vaultId"
         @closed="loadPairs"
         v-if="accessLevel === 'W' || accessLevel === 'O'"
       />
+      <inviteUser :vaultId="vaultId" v-if="accessLevel === 'O'" />
       <button
         class="btn btn-create-pair"
         v-if="accessLevel === 'O'"
