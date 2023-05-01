@@ -125,7 +125,7 @@ export default {
 }
 
 .vault-edit-link {
-  display: flex;
+  display: inline-flex;
   color: var(--color-text);
   text-decoration: none;
   gap: 3rem;

@@ -1,4 +1,5 @@
 <script setup>
+import { useVaultsStore } from "../stores/vaults.store";
 import updatePairModal from "./update-pair-modal.vue";
 </script>
 <script>
@@ -10,6 +11,12 @@ export default {
     onModalClosed() {
       this.$emit("closed");
     },
+    async deletePair() {
+      const vaultStore = useVaultsStore();
+      await vaultStore.deletePair(this.pairId);
+      vaultStore.getPairs(this.vaultId);
+      this.$emit("updatepairs");
+    },
   },
   emits: ["closed"],
   props: {
@@ -18,7 +25,7 @@ export default {
     thing: String,
     username: String,
     password: String,
-    showEditButtons: Boolean,
+    showActionsButton: Boolean,
   },
 };
 </script>
@@ -27,19 +34,19 @@ export default {
     <td class="vault-table-body-item">{{ thing }}</td>
     <td class="vault-table-body-item">
       <!-- <button class="btn-copy" v-on:click="copyToClipboard({{ Username }})"> -->
-      <button class="btn-copy" v-on:click="copyToClipboard(username)">
+      <button class="btn-copy" @click="copyToClipboard(username)">
         {{ username }}<i class="fa-solid fa-copy"></i>
       </button>
     </td>
     <td class="vault-table-body-item">
       <!-- <button class="btn-copy" v-on:click="copyToClipboard({{ password }})"> -->
-      <button class="btn-copy" v-on:click="copyToClipboard(password)">
+      <button class="btn-copy" @click="copyToClipboard(password)">
         {{ password }}<i class="fa-solid fa-copy"></i>
       </button>
     </td>
     <td
       class="vault-table-body-item vault-table-edit-col"
-      v-if="showEditButtons"
+      v-if="showActionsButton"
     >
       <updatePairModal
         :vaultId="vaultId"
@@ -49,6 +56,9 @@ export default {
         :password="password"
         @closed="onModalClosed"
       />
+      <button @click="deletePair()" class="btn-edit">
+        <i class="fa-solid fa-trash-can"></i>
+      </button>
     </td>
   </tr>
 </template>
@@ -63,6 +73,19 @@ export default {
   width: 100%;
   color: var(--color-text);
   white-space: nowrap;
+}
+
+.btn-edit {
+  display: inline;
+  color: var(--color-text);
+  text-decoration: none;
+  gap: 3rem;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 
 .vault-table-body-item button {

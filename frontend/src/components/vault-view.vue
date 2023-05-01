@@ -134,8 +134,9 @@ export default {
           :thing="pair.application"
           :username="pair.username"
           :password="pair.password"
-          :showEditButtons="accessLevel === 'W' || accessLevel === 'O'"
+          :showActionsButton="accessLevel === 'W' || accessLevel === 'O'"
           @closed="loadPairs"
+          @updatepairs="loadPairs"
         />
       </tbody>
       <div class="loader" v-else></div>

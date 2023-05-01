@@ -30,7 +30,7 @@ class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = InvitationSerializer
 
 
-class PairViewSet(viewsets.ReadOnlyModelViewSet):
+class PairViewSet(viewsets.ViewSet):
     queryset = Pair.objects.all()
     serializer_class = PairSerializer
 
@@ -323,12 +323,14 @@ def delete_vault_by_id(request, vault_id):
     return JsonResponse(data={}, status=200)
 
 
-def route_pairs(request, vault_id):
+def route_vault_pairs(request, vault_id):
     if request.method == 'GET':
         return get_pairs(request, vault_id)
     elif request.method == 'POST':
         return add_pair(request, vault_id)
-    return JsonResponse(data={'error': 'Invalid request'}, status=400)
+    return JsonResponse({
+        'errors': ['Method not allowed ' + request.method]
+    }, status=405)
 
 
 @require_GET
@@ -371,6 +373,16 @@ def add_pair(request, vault_id):
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
 
+def route_pairs(request, pair_id):
+    if request.method == 'POST':
+        return update_pair(request, pair_id)
+    elif request.method == 'DELETE':
+        return delete_pair(request, pair_id)
+    else:
+        return JsonResponse({
+            'errors': ['Method not allowed ' + request.method]
+        }, status=405)
+
 
 @require_POST
 def update_pair(request, pair_id):
@@ -380,10 +392,7 @@ def update_pair(request, pair_id):
     password = data.get('password')
 
     pair = Pair.objects.get(id=pair_id)
-    print(pair)
-
     vault = pair.vault
-    print(vault)
 
     user = request.user
     if not user.is_authenticated:
@@ -401,15 +410,10 @@ def update_pair(request, pair_id):
                 'username': pair.username, 'password': pair.password}
     return JsonResponse(data={'pair': jsonPair}, status=200)
 
-
-@require_POST
+@require_http_methods(['DELETE'])
 def delete_pair(request, pair_id):
-    data = json.loads(request.body)
-    vault_id = data.get('vault_id')
-    user_id = data.get('user_id')
-
-    user = User.objects.get(id=user_id)
-    vault = Vault.objects.get(id=vault_id)
+    pair = Pair.objects.get(id=pair_id)
+    vault = pair.vault
 
     user = request.user
     if not user.is_authenticated:
@@ -418,11 +422,9 @@ def delete_pair(request, pair_id):
     access_level = AccountVaultAccess.objects.get(account=user.account, vault=vault).access_level
     if user.account not in vault.users.all() or (access_level != 'O' and access_level != 'W'):
         return JsonResponse(data={'error': 'User does not have access to this vault'}, status=403)
-
-    pair = Pair.objects.get(id=pair_id)
+    
     pair.delete()
-    return JsonResponse(data={'message': 'Pair deleted'}, status=200)
-
+    return JsonResponse(data={}, status=200)
 
 @require_POST
 def update_user(request, user_id):

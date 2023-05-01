@@ -105,6 +105,15 @@ export const useVaultsStore = defineStore({
         return { vault: {} };
       }
     },
+    async deletePair(pairId) {
+      try {
+        await fetchWrapper.delete(`${pairsUrl}/${pairId}/`);
+      } catch (error) {
+        const alertStore = useAlertStore();
+        alertStore.error(error);
+        return { vault: {} };
+      }
+    },
     async getPairs(vaultID) {
       try {
         let pairs = await fetchWrapper.get(`${baseUrl}/${vaultID}/pairs/`);
