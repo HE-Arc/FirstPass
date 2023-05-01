@@ -29,7 +29,6 @@ export default {
       const vaultsStore = useVaultsStore();
       const { application, username, password } = values;
       await vaultsStore.updatePair(
-        this.vaultId,
         this.pairId,
         application,
         username,
