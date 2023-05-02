@@ -52,9 +52,10 @@ export default {
 <style>
 .account-forms {
   display: flex;
-  flex-direction: row;
-  gap: 4rem;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
+  margin-bottom: 6rem;
 }
 .update-container {
   display: flex;
@@ -65,5 +66,13 @@ export default {
   background-color: var(--color-background);
   border-radius: 0.5rem;
   padding: 2rem;
+}
+
+@media screen and (min-width: 1024px) {
+  .account-forms {
+    flex-direction: row;
+    gap: 4rem;
+    justify-content: space-between;
+  }
 }
 </style>
