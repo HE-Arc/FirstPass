@@ -71,16 +71,10 @@ export default {
           <td>{{ invite.vaultName }}</td>
           <td>{{ invite.username }}</td>
           <td>
-            <button
-              class="btn btn-accept"
-              @click="this.acceptInvite(invite.id)"
-            >
+            <button class="btn btn-accept" @click="acceptInvite(invite.id)">
               Accept
             </button>
-            <button
-              class="btn btn-decline"
-              @click="this.declineInvite(invite.id)"
-            >
+            <button class="btn btn-decline" @click="declineInvite(invite.id)">
               Decline
             </button>
           </td>
