@@ -87,7 +87,12 @@ export default {
   cursor: pointer;
   font-size: 1.5rem;
 }
-
+.btn-edit > .fa-trash-can {
+  transition: all 0.2s ease-in-out;
+}
+.btn-edit:hover > .fa-trash-can {
+  color: var(--lastpass-red);
+}
 .vault-table-body-item button {
   cursor: pointer;
 }
