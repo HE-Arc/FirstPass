@@ -140,6 +140,14 @@ export default {
   font-size: 1.5rem;
 }
 
+.vault-edit-link > .fa-pen-to-square {
+  transition: all 0.2s ease-in-out;
+}
+
+.vault-edit-link:hover > .fa-pen-to-square {
+  color: var(--lastpass-red);
+}
+
 @media screen and (min-width: 1024px) {
   .modal {
     min-width: 30%;
